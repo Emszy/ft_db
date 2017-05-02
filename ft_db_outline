@@ -15,6 +15,7 @@ parse arguments
 		2 = create table:
 			print names of existing databases from file
 			ask user to choose which db;
+			create txt file corresponding to database name
 			ask table name to create;
 			parse table names in curr database
 			if doesnt exist
@@ -35,7 +36,7 @@ parse arguments
 			print names of existing tables from file
 				ask to choose a table
 			parse through each col to add data to row
-
+			
 
 
 

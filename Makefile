@@ -5,13 +5,11 @@ FLAGS = -Wall -Wextra -Werror
 SRC =	\
 		ft_db.c	\
 		misc.c \
-		del_db_name.c \
 		cru_db_name.c
 
 INPUT_OBJ =	\
 		ft_db.o	\
 		misc.o \
-		del_db_name.c \
 		cru_db_name.o
 	
 OBJ = $(patsubst %.c,%.o,$(addprefix ./, $(SRC)))

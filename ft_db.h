@@ -27,7 +27,7 @@ char *get_answer(char *message);
 void init_db_file(t_obj *obj);
 int count_databases(t_obj *obj);
 void overwrite_db(t_obj *obj, char **db_names);
-void delete_database(t_obj *obj);
+int delete_database(t_obj *obj);
 int	print_database(char *database_directory);
 char *search_database_list(t_obj *obj, char *message);
 void add_database(t_obj *obj);
