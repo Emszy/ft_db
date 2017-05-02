@@ -1,0 +1,60 @@
+parse arguments
+
+1 = create
+
+
+	parse arguements
+
+
+		1 =	create database :
+			ask name of db
+			parse existing and see if exists already
+			if doesnt exist open databases file and write name;
+		
+		
+		2 = create table:
+			print names of existing databases from file
+			ask user to choose which db;
+			ask table name to create;
+			parse table names in curr database
+			if doesnt exist
+			add table name to list of files;
+
+		3 = create column in database:
+			print names of existing databases from file
+				ask to choose a database
+			print names of existing tables from file
+				ask to choose a table
+			ask column name to add to database
+				see if column name exists
+				if it doesnt add column to column files
+
+		4 = Create data for table:
+			print names of existing databases from file
+				ask to choose a database
+			print names of existing tables from file
+				ask to choose a table
+			parse through each col to add data to row
+
+
+
+
+
+
+2 = read
+
+3 = update
+
+4 = destroy
+
+
+
+DB --------> Table --------> col_name -----> row_numbers ----> data
+
+
+
+example:
+
+People DB -----> people info table ---> 
+
+name | address | Phone

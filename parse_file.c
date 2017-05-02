@@ -1,6 +1,5 @@
 #include "ft_db.h"
 
-
 void add_database(char *db_name, char *database_directory)
 {
 	FILE *fptr;
@@ -86,13 +85,21 @@ char *search_datatables(char *table_name, char *table_list)
 int main(void)
 {
 
-	char *database_directory;
-	char *table_directory = NULL;
-	char *table_list = NULL;
+	// char *database_directory;
+	// char *table_directory = NULL;
+	// char *table_list = NULL;
+	// char *table_match;
 
-	char *table_match;
+	// char *directory_match;
 
-	char *directory_match;
+
+
+	 char cwd[1024];
+   if (getcwd(cwd, sizeof(cwd)) != NULL)
+  		printf("%s\n", cwd);
+
+
+
 
 	database_directory = (char*)malloc(sizeof(char*) * 
 		ft_strlen("/nfs/2016/e/ebucheit/Desktop/ft_db/database/database.txt"));
@@ -100,29 +107,29 @@ int main(void)
 
 
 
-	directory_match = search_databases("NEW_DB");
-	if (ft_strcmp(directory_match, "NO MATCH") != 0)
-	{
+	// directory_match = search_databases("NEW_DB");
+	// if (ft_strcmp(directory_match, "NO MATCH") != 0)
+	// {
 
 
-		// print tables
-		// getchar table to add
+	// 	// print tables
+	// 	// getchar table to add
 
-		table_directory = ft_strjoin("/nfs/2016/e/ebucheit/Desktop/ft_db/database/tables/", directory_match);
-		table_list = ft_strjoin(table_directory, ".txt");
-		add_datatable("GETCHAR TABLE HERE", table_list);
-		printf("%s\n", table_directory);
-
-
-
-		//print tables
-		//getchar row db name
-		table_match = search_datatables("GETCHAR TABLE HERE", table_list);
-		printf("%s\n", table_match);
+	// 	table_directory = ft_strjoin("/nfs/2016/e/ebucheit/Desktop/ft_db/database/tables/", directory_match);
+	// 	table_list = ft_strjoin(table_directory, ".txt");
+	// 	add_datatable("GETCHAR TABLE HERE", table_list);
+	// 	printf("%s\n", table_directory);
 
 
 
-	}
+	// 	//print tables
+	// 	//getchar row db name
+	// 	table_match = search_datatables("GETCHAR TABLE HERE", table_list);
+	// 	printf("%s\n", table_match);
+
+
+
+	// }
 
 
 

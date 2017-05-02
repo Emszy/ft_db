@@ -1,6 +1,6 @@
 #include "ft_db.h"
 
-void add_database(char *db_name)
+void add_database(char *db_name, char *dir_name)
 {
 	FILE *fptr;
 
@@ -52,7 +52,6 @@ int	print_database(void)
 		ft_putstr("\n");
 	}
 return(0);
-
 }
 
 int	main(int ac, char **av)
