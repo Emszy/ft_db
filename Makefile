@@ -5,12 +5,14 @@ FLAGS = -Wall -Wextra -Werror
 SRC =	\
 		ft_db.c	\
 		misc.c \
-		cru_db_name.c
+		cru_db_name.c \
+		del_db_name.c
 
 INPUT_OBJ =	\
 		ft_db.o	\
 		misc.o \
-		cru_db_name.o
+		cru_db_name.o \
+		del_db_name. o
 	
 OBJ = $(patsubst %.c,%.o,$(addprefix ./, $(SRC)))
 
@@ -29,6 +31,11 @@ clean:
 fclean: clean
 	make -C libft/ fclean
 	/bin/rm -f $(NAME)
+
+fast: all
+	make -C libft/ clean
+	/bin/rm -f $(OBJ)
+	/bin/rm -f $(INPUT_OBJ)
 
 re: fclean all
 	
