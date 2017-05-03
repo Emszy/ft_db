@@ -1,3 +1,4 @@
+#include "ft_db.h"
 int choose_dbtab_path(t_obj *obj, char *message)
 {
 	char *database;

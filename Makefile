@@ -6,13 +6,15 @@ SRC =	\
 		ft_db.c	\
 		misc.c \
 		cru_db_name.c \
-		del_db_name.c
+		del_db_name.c \
+		table_crud.c
 
 INPUT_OBJ =	\
 		ft_db.o	\
 		misc.o \
 		cru_db_name.o \
-		del_db_name. o
+		del_db_name. o \
+		table_crud.o
 	
 OBJ = $(patsubst %.c,%.o,$(addprefix ./, $(SRC)))
 
