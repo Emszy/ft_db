@@ -17,7 +17,7 @@ int	print_database(char *database_directory)
 	return(0);
 }
 
-char *search_database_list(t_obj *obj, char *message)
+char *search_database_list(char *filename, char *message)
 {
 	int		fd;
 	int		match;
@@ -27,16 +27,16 @@ char *search_database_list(t_obj *obj, char *message)
 
 	
 	match = 0;
-	fd = open(obj->filename.db, O_RDONLY);
-	print_database(obj->filename.db);
+	fd = open(filename, O_RDONLY);
+	print_database(filename);
 
 	db_name = get_answer(message);
-
 	while (get_next_line(fd, &line) == 1)
 	{
 		if (strcmp(line, db_name) == 0)
 		{
 			ret = (char*)malloc(sizeof(char*) * ft_strlen(line) + 1);
+			ft_putstr("\nMATCHES\n");
 			ft_strcpy(ret, line);
 			match = 1;
 		}
@@ -125,7 +125,7 @@ int update_database_name(t_obj *obj)
 
 	db_count = 0;
 	x = 0;
-		delete = search_database_list(obj, "ENTER DATABASE NAME TO UPDATE");
+		delete = search_database_list(obj->filename.db, "ENTER DATABASE NAME TO UPDATE");
 	if (ft_strcmp(delete, "NO MATCH\n") == 0)
 	{
 		ft_putstr(delete);

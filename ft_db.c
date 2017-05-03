@@ -4,7 +4,7 @@ int choose_dbtab_path(t_obj *obj, char *message)
 {
 	char *database;
 
-	database = search_database_list(obj, message);
+	database = search_database_list(obj->filename.db, message);
 	if (ft_strcmp(database, "NO MATCH") == 0)
 		return(-1);
   	obj->filename.table = ft_strjoin(obj->filename.curr_dir, "/database/tables/");
@@ -67,6 +67,7 @@ int add_table_to_db(t_obj *obj)
 	return (0);
 }
 
+
 int count_tables(t_obj *obj)
 {
 	int fd;
@@ -83,9 +84,14 @@ int count_tables(t_obj *obj)
 
 int delete_table(t_obj *obj)
 {
-	char *table_name;
+	char *delete;
 	int table_count;
+	char **new;
+	int x;
+	int fd;
+	char *line;
 
+	x = 0;
 
 	if (choose_dbtab_path(obj, "ENTER DB NAME THAT HAS A TABLE YOUD LIKE TO DELETE") == -1)
 	{
@@ -94,16 +100,26 @@ int delete_table(t_obj *obj)
 	}
 	printf("%s\n", obj->filename.table);
 	print_tables(obj);
-	table_name = get_answer("ENTER NAME OF THE TABLE");
-	printf("%s\n", table_name);
+	delete = search_database_list(obj->filename.table, "ENTER DATABASE TABLE TO BE DELETED");
+	printf("%s\n", delete);
 	table_count = count_tables(obj);
 	printf("%d\n", table_count);
 
-
+	
+	fd = open(obj->filename.table, O_RDONLY);
+	new = (char**)malloc(sizeof(char**) * table_count);
+	while (get_next_line(fd, &line) == 1)
+	{
+		if (ft_strcmp(delete, line) != 0)
+		{
+			new[x] = (char*)malloc(sizeof(char *) * ft_strlen(line) + 1);
+			ft_strcpy(new[x], line);
+			printf("%s\n", new[x]);
+			x++;
+		}
+	}
 
 	
-
-
 	return (0);
 }
 
@@ -121,9 +137,9 @@ int main(void)
 
 	// CRUD for database names
 	//add_database(obj);
-	// search_database_list(obj, "search"); NEEDS DUPLICATE PRINT FIXING
-	//delete_database(obj);
-	// update_database_name(obj);
+	//search_database_list(obj->filename.db, "search"); //NEEDS DUPLICATE PRINT FIXING
+	// delete_database(obj);
+	// update_database_name(obj); // NEEDS FILENAME CHANGE
 	// print_database(obj->filename.db);
 
 

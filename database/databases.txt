@@ -1,4 +1,5 @@
 monsters
-cars
 planes
 bugs
+oceans
+planets

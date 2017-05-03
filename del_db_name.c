@@ -47,7 +47,7 @@ int delete_database(t_obj *obj)
 
 	db_count = 0;
 	x = 0;
-	delete = search_database_list(obj, "ENTER DATABASE NAME TO DELETE");
+	delete = search_database_list(obj->filename.db, "ENTER DATABASE NAME TO BE DELETED");
 	if (ft_strcmp(delete, "NO MATCH\n") == 0)
 	{
 		ft_putstr(delete);

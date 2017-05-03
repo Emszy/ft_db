@@ -31,7 +31,7 @@ int count_databases(t_obj *obj);
 void overwrite_db(t_obj *obj, char **db_names, int db_count);
 int delete_database(t_obj *obj);
 int	print_database(char *database_directory);
-char *search_database_list(t_obj *obj, char *message);
+char *search_database_list(char *filename, char *message);
 void add_database(t_obj *obj);
 int update_database_name(t_obj *obj);
 int	print_tables(t_obj *obj);
