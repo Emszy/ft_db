@@ -1,3 +1,5 @@
 mosquitoes
 cockaroach
-leeches
+leech
+rollypolly
+worm

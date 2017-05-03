@@ -151,6 +151,6 @@ int update_database_name(t_obj *obj)
 		}
 	}
 	printf("%d\n", db_count);
-	overwrite_db(obj, new, db_count);
+	overwrite_db(obj->filename.db, new, db_count);
 	return (1);
 }

@@ -1,12 +1,12 @@
 #include "ft_db.h"
 
-void overwrite_db(t_obj *obj, char **db_names, int db_count)
+void overwrite_db(char *filename, char **db_names, int db_count)
 {
 	FILE *fptr;
 	int x;
 
 	x = 0;
-	fptr = fopen(obj->filename.db, "w");
+	fptr = fopen(filename, "w");
 	if(fptr == NULL)
 	{
 		printf("Error!");
@@ -68,6 +68,6 @@ int delete_database(t_obj *obj)
 	printf("%d\n", x);
 	printf("%d\n", db_count);
 
-	overwrite_db(obj, new, x);
+	overwrite_db(obj->filename.db, new, x);
 	return (1);
 }
