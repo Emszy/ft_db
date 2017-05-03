@@ -3,3 +3,6 @@ cockaroach
 leech
 rollypolly
 worm
+make
+make
+lol

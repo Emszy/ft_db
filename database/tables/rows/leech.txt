@@ -1,0 +1,4 @@
+blood type
+food
+color
+length

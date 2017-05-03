@@ -16,7 +16,8 @@ typedef struct s_file_names
 	char *table;
 	char *curr_table;
 	int tab_path;
-	char *rows;
+	char *row;
+	char *curr_row;
 }				t_file_names;
 
 typedef struct s_obj
@@ -45,6 +46,13 @@ int add_table_to_db(t_obj *obj);
 int count_tables(t_obj *obj);
 int delete_table(t_obj *obj);
 int update_table(t_obj *obj);
+int choose_dbrow_path(t_obj *obj, char *message);
+int	print_rows(t_obj *obj);
+void write_row_to_file(t_obj *obj);
+int count_rows(t_obj *obj);
+int delete_row(t_obj *obj);
+int update_row(t_obj *obj);
+
 
 
 

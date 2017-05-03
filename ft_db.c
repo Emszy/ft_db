@@ -25,6 +25,14 @@ int main(void)
 
 	//CRUD FOR ROWS
 
+	// add_row_to_table(obj);
+	// print_rows(obj);
+	// delete_row(obj);
+	// update_row(obj);
+	// print_rows(obj);
+
+	//CRUD FOR COLUMNS;
+
 
 
 
