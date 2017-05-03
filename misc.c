@@ -18,5 +18,7 @@ void init_db_file(t_obj *obj)
 {
 	char cwd[1024];
 	getcwd(cwd, sizeof(cwd));
+	obj->filename.curr_dir = malloc(sizeof(char*) * ft_strlen(cwd) + 1);
+	ft_strcpy(obj->filename.curr_dir, cwd);
   	obj->filename.db = ft_strjoin(cwd, "/database/databases.txt");
 }

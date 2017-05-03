@@ -1,6 +1,6 @@
 #include "ft_db.h"
 
-void overwrite_db(t_obj *obj, char **db_names)
+void overwrite_db(t_obj *obj, char **db_names, int db_count)
 {
 	FILE *fptr;
 	int x;
@@ -12,7 +12,7 @@ void overwrite_db(t_obj *obj, char **db_names)
 		printf("Error!");
 		exit(1);
 	}
-	while (db_names[x])
+	while (x < db_count)
 	{
 		fprintf(fptr, "%s\n", db_names[x]);
 		x++;
@@ -47,7 +47,7 @@ int delete_database(t_obj *obj)
 
 	db_count = 0;
 	x = 0;
-	delete = search_database_list(obj, "ENTER DATABASE TO NAME TO DELETE");
+	delete = search_database_list(obj, "ENTER DATABASE NAME TO DELETE");
 	if (ft_strcmp(delete, "NO MATCH\n") == 0)
 	{
 		ft_putstr(delete);
@@ -65,7 +65,9 @@ int delete_database(t_obj *obj)
 			x++;
 		}
 	}
-	x = 0;
-	overwrite_db(obj, new);
+	printf("%d\n", x);
+	printf("%d\n", db_count);
+
+	overwrite_db(obj, new, x);
 	return (1);
 }
