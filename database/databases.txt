@@ -1,8 +1,1 @@
-planes
-bugs
-oceans
-monsters
-money
-newnew
-new
-old
+persons

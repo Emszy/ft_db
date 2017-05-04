@@ -104,6 +104,15 @@ void write_row_to_file(t_obj *obj);
 int count_rows(t_obj *obj);
 int delete_row(t_obj *obj);
 int update_row(t_obj *obj);
+int choose_dbcol_path(t_obj *obj, char *message);
+int	print_cols(t_obj *obj);
+void write_col_to_file(t_obj *obj);
+int add_col_to_row(t_obj *obj);
+int count_cols(t_obj *obj);
+int delete_col(t_obj *obj);
+int update_col(t_obj *obj);
+
+
 
 
 

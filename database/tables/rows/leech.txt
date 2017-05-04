@@ -1,5 +1,0 @@
-blood type
-food
-color
-length
-specials

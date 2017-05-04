@@ -1,5 +1,0 @@
-mosquitoes
-cockaroach
-leech
-rollypolly
-worm

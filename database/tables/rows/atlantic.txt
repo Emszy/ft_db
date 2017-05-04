@@ -1,5 +1,0 @@
-animals
-life rate
-waves
-sharks
-new row
