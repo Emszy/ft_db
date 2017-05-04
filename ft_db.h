@@ -46,6 +46,16 @@
 # define KEY_UP 126
 # define DELETE 51
 
+#define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_GREEN   "\x1b[32m"
+#define ANSI_COLOR_YELLOW  "\x1b[33m"
+#define ANSI_COLOR_BLUE    "\x1b[34m"
+#define ANSI_COLOR_MAGENTA "\x1b[35m"
+#define ANSI_COLOR_CYAN    "\x1b[36m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
+
+
+
 typedef struct s_mlx 
 {
   void    *mlx;
@@ -80,6 +90,7 @@ typedef struct s_obj
 char *get_answer(char *message);
 void init_db_file(t_obj *obj);
 int count_databases(t_obj *obj);
+int check_duplicates(char *filepath, char *db_name);
 void overwrite_db(char *filename, char **db_names, int db_count);
 int delete_database(t_obj *obj);
 int	print_database(char *database_directory);

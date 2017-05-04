@@ -1,29 +1,87 @@
 #include "ft_db.h"
 
+void database_nav(t_obj *obj)
+{
+	int in_db_dir;
+	int usr_crud_choice;
+	char *crud_choice;
+
+	in_db_dir = 1;
+	while (in_db_dir)
+	{
+		print_database(obj->filename.db);
+		printf("Enter 1 to add a database\nEnter 2 to delete a database\nEnter 3 to update a database\nEnter 4 to quit\n");
+		crud_choice = get_answer("Choose now");
+		usr_crud_choice = atoi(crud_choice);
+		if (usr_crud_choice == 1)
+			add_database(obj);
+		if (usr_crud_choice == 2)
+			delete_database(obj);
+		if (usr_crud_choice == 3)
+			update_database_name(obj);
+		if (usr_crud_choice == 4)
+			in_db_dir = 0;
+	}
+}
+
+void datatable_nav(t_obj *obj)
+{
+	int in_table_dir;
+	int usr_crud_choice;
+	char *crud_choice;
+	in_table_dir = 1;
+	while (in_table_dir)
+	{	
+		print_tables(obj);
+		printf("Enter 1 to add a table\nEnter 2 to delete a table\nEnter 3 to update a table\nEnter 4 to quit\n");
+		crud_choice = get_answer("Choose now");
+		usr_crud_choice = atoi(crud_choice);
+		if (usr_crud_choice == 1)
+			add_table_to_db(obj);
+		if (usr_crud_choice == 2)
+			delete_table(obj);
+		if (usr_crud_choice == 3)
+			update_table(obj);
+		if (usr_crud_choice == 4)
+			in_table_dir = 0;
+	}
+}
+
+
+
 int main(void)
 {
 	t_obj *obj;
 	int tru = 1;
-	char *usr_choice;
-	int choice;
+	char *dir_choice;
+	int usr_dir_choice;
+	
+	
 	obj = malloc(sizeof(t_obj));
 	init_db_file(obj);
 	
 	
 	while(tru)
 	{
+
 		print_database(obj->filename.db);
-		printf("Enter 1 to add a database\nEnter 2 to delete a database\nEnter 3 to update a database\nEnter 4 to quit\n");
-		usr_choice = get_answer("Choose now");
-		choice = atoi(usr_choice);
-		if (choice == 1)
-			add_database(obj);
-		if (choice == 2)
-			delete_database(obj);
-		if (choice == 3)
-		 	update_database_name(obj);
-		if (choice == 4)
+		usr_dir_choice = 0;
+		dir_choice = get_answer("Enter 1 to go to databases\nEnter 2 to navigate to a table\nEnter 3 to navigate to table rows\nEnter 4 to navigate to row columns\nEnter 5 to quit Program\n");
+
+		usr_dir_choice = atoi(dir_choice);
+		if (usr_dir_choice == 1)
+			database_nav(obj);
+		if (usr_dir_choice == 2)
+		{
+
+
+
+			datatable_nav(obj);
+		}
+		if (usr_dir_choice == 5)
+		{
 			tru = 0;
+		}
 	}
 		
 

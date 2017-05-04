@@ -42,9 +42,16 @@ void write_table_to_file(t_obj *obj)
 	FILE *fptr;
 	char *table_name;
 
-   fptr = fopen(obj->filename.table, "a");
+  
    table_name = get_answer("ENTER NAME OF NEW TABLE");
-   obj->filename.curr_row = table_name;
+	if (check_duplicates(obj->filename.table, table_name) == 1)
+	{
+		ft_putstr("!!!DUPLICATE DATABASE, PLEASE CHOOSE ANOTHER NAME!!!\n");
+		write_table_to_file(obj);
+  		return ;
+	}
+	fptr = fopen(obj->filename.table, "a");
+	obj->filename.curr_row = table_name;
    if(fptr == NULL)
    {
       printf("Error!");   
@@ -81,7 +88,6 @@ int add_table_to_db(t_obj *obj)
 		ft_putstr("NO SUCH INFORMATION");
 		return(-1);
 	}
-  	printf("%s\n", obj->filename.table);
 	write_table_to_file(obj);
 	make_row_file(obj);
 	print_tables(obj);
@@ -187,7 +193,7 @@ int update_row_file_name(t_obj *obj, char *delete, char *update)
   	new_filename = ft_strjoin(new_filename, update);
   	new_filename = ft_strjoin(new_filename, ".txt");
 
-	ret = remove(filename);
+	ret = rename(filename, new_filename);
    if(ret == 0) 
       ft_putstr("File deleted successfully");
    else 
@@ -242,6 +248,7 @@ int update_table(t_obj *obj)
 		}
 	}
 	overwrite_db(obj->filename.table, new, x);
+	update_row_file_name(obj, delete, update_name);
 	return (0);
 }
 

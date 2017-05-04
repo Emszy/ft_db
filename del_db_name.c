@@ -12,10 +12,15 @@ int delete_table_file(t_obj *obj, char *delete)
   	
   	fptr = fopen(filename, "w");
 	ret = remove(filename);
-   if(ret == 0) 
-      ft_putstr("File deleted successfully");
-   else 
-      ft_putstr("Error: unable to delete the file");
+	ft_putstr(ANSI_COLOR_GREEN);
+   if(ret == 0)
+      ft_putstr("\nFile deleted successfully\n");
+   else
+   {
+   	ft_putstr(ANSI_COLOR_RED);
+      ft_putstr("\nError: unable to delete the file\n");
+   }
+  	ft_putstr(ANSI_COLOR_RESET);
    fclose(fptr);
    return(0);
 }

@@ -4,15 +4,20 @@ int	print_database(char *database_directory)
 {
 	int		fd;
 	char	*str;
-
 	fd = open(database_directory, O_RDONLY);
-	ft_putstr("---------------\n");
+	ft_putstr(ANSI_COLOR_BLUE);
+	ft_putstr("DATABASES:\n---------------\n");
 	while(get_next_line(fd,&str))
 	{
+		ft_putstr(ANSI_COLOR_BLUE);
 		ft_putstr(str);
+		ft_putstr(ANSI_COLOR_RESET);
 		ft_putstr("\n");
 	}
+	ft_putstr(ANSI_COLOR_BLUE);
 	ft_putstr("---------------");
+	ft_putstr(ANSI_COLOR_RESET);
+
 	ft_putstr("\n");
 	return(0);
 }
@@ -36,7 +41,6 @@ char *search_database_list(char *filename, char *message)
 		if (strcmp(line, db_name) == 0)
 		{
 			ret = (char*)malloc(sizeof(char*) * ft_strlen(line) + 1);
-			ft_putstr("\nMATCHES\n");
 			ft_strcpy(ret, line);
 			match = 1;
 		}
@@ -120,16 +124,19 @@ int update_table_file_name(t_obj *obj, char *delete, char *update)
   	filename = ft_strjoin(obj->filename.curr_dir, "/database/tables/");
   	filename = ft_strjoin(filename, delete);
   	filename = ft_strjoin(filename, ".txt");
-
   	new_filename = ft_strjoin(obj->filename.curr_dir, "/database/tables/");
   	new_filename = ft_strjoin(new_filename, update);
   	new_filename = ft_strjoin(new_filename, ".txt");
-  	
+  	ft_putstr(ANSI_COLOR_GREEN);
 	ret = rename(filename, new_filename);
    if(ret == 0) 
-      ft_putstr("File renamed successfully");
-   else 
-      ft_putstr("Error: unable to rename the file");
+   		ft_putstr("Updated successfully\n");
+   else
+   {
+   		ft_putstr(ANSI_COLOR_RED);
+    	ft_putstr("Error: unable to update!\n");
+   }
+   ft_putstr(ANSI_COLOR_RESET);
    return(0);
 }
 
