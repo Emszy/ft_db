@@ -76,6 +76,7 @@ typedef struct s_file_names
 	int tab_path;
 	char *row;
 	char *curr_row;
+	int row_path;
 	char *col_name;
 	char *curr_col;
 	int col_path;

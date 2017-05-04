@@ -1,28 +1,35 @@
 #include "ft_db.h"
 
-void database_nav(t_obj *obj)
+void datarow_nav(t_obj *obj)
 {
-	int in_db_dir;
+	int in_row_dir;
 	int usr_crud_choice;
 	char *crud_choice;
-
-	in_db_dir = 1;
-	while (in_db_dir)
-	{
-		print_database(obj->filename.db);
-		printf("Enter 1 to add a database\nEnter 2 to delete a database\nEnter 3 to update a database\nEnter 4 to quit\n");
-		crud_choice = get_answer("Choose now");
+	in_row_dir = 1;
+	while (in_row_dir)
+	{	
+		print_rows(obj);
+		printf("Enter 1 to add a row\nEnter 2 to delete a row\nEnter 3 to update a row\nEnter 4 to go back\nEnter 5 to quit");
+		crud_choice = get_answer("\nChoose now");
 		usr_crud_choice = atoi(crud_choice);
 		if (usr_crud_choice == 1)
-			add_database(obj);
+			add_row_to_table(obj);
 		if (usr_crud_choice == 2)
-			delete_database(obj);
+			delete_row(obj);
 		if (usr_crud_choice == 3)
-			update_database_name(obj);
+			update_row(obj);
 		if (usr_crud_choice == 4)
-			in_db_dir = 0;
+			obj->filename.row_path = 0;
+		if (usr_crud_choice == 5)
+		{
+			obj->filename.row_path = 0;
+			obj->filename.table_path = 0;
+			in_row_dir = 0;
+		}
 	}
+
 }
+
 
 void datatable_nav(t_obj *obj)
 {
@@ -33,8 +40,8 @@ void datatable_nav(t_obj *obj)
 	while (in_table_dir)
 	{	
 		print_tables(obj);
-		printf("Enter 1 to add a table\nEnter 2 to delete a table\nEnter 3 to update a table\nEnter 4 to quit\n");
-		crud_choice = get_answer("Choose now");
+		printf("Enter 1 to add a table\nEnter 2 to delete a table\nEnter 3 to update a table\nEnter 4 to go back\nEnter 5 to quit");
+		crud_choice = get_answer("\nChoose now");
 		usr_crud_choice = atoi(crud_choice);
 		if (usr_crud_choice == 1)
 			add_table_to_db(obj);
@@ -43,11 +50,40 @@ void datatable_nav(t_obj *obj)
 		if (usr_crud_choice == 3)
 			update_table(obj);
 		if (usr_crud_choice == 4)
+			obj->filename.tab_path = 0;
+		if (usr_crud_choice == 5)
+		{
+			obj->filename.tab_path = 0;
 			in_table_dir = 0;
+		}
 	}
 }
 
+void database_nav(t_obj *obj)
+{
+	int in_db_dir;
+	int usr_crud_choice;
+	char *crud_choice;
 
+	in_db_dir = 1;
+	while (in_db_dir)
+	{
+		print_database(obj->filename.db);
+		printf("Enter 1 to add a database\nEnter 2 to delete a database\nEnter 3 to update a database\nEnter 4 to go to tables\nEnter 5 to quit\n");
+		crud_choice = get_answer("Choose now");
+		usr_crud_choice = atoi(crud_choice);
+		if (usr_crud_choice == 1)
+			add_database(obj);
+		if (usr_crud_choice == 2)
+			delete_database(obj);
+		if (usr_crud_choice == 3)
+			update_database_name(obj);
+		if (usr_crud_choice == 4)
+			datatable_nav(obj);
+		if (usr_crud_choice == 5)
+			in_db_dir = 0;
+	}
+}
 
 int main(void)
 {
@@ -72,12 +108,9 @@ int main(void)
 		if (usr_dir_choice == 1)
 			database_nav(obj);
 		if (usr_dir_choice == 2)
-		{
-
-
-
 			datatable_nav(obj);
-		}
+		if (usr_dir_choice == 3)
+			datarow_nav(obj);
 		if (usr_dir_choice == 5)
 		{
 			tru = 0;
@@ -98,7 +131,7 @@ int main(void)
 	// 	delete_table(obj);
 	// 	update_table(obj);
 
-	// CRUD FOR COLS
+	// CRUD FOR ROWS
 
 	 //add_row_to_table(obj);
 	// print_rows(obj);

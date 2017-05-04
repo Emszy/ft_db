@@ -12,7 +12,7 @@ int choose_dbrow_path(t_obj *obj, char *message)
   	obj->filename.row = ft_strjoin(obj->filename.row,  table);
   	obj->filename.row = ft_strjoin(obj->filename.row, ".txt");
   	obj->filename.curr_row = table;
-  	obj->filename.tab_path = 1;
+  	obj->filename.row_path = 1;
 
   	return (0);
 }
@@ -29,11 +29,14 @@ int	print_rows(t_obj *obj)
 			ft_putstr("NO SUCH INFORMATION");
 			return(-1);
 		}
+	}
+	if (obj->filename.row_path != 1)
+	{
 		printf("%s\n", obj->filename.curr_row);
-		if (choose_dbrow_path(obj, "ENTER DB NAME THAT YOUD LIKE TO SEE") == -1)
+		if (choose_dbrow_path(obj, "ENTER DB table THAT YOUD LIKE TO SEE") == -1)
 		{
-		ft_putstr("NO SUCH INFORMATION");
-		return(-1);
+			ft_putstr("NO SUCH INFORMATION");
+			return(-1);
 		}
 	}
 	fd = open(obj->filename.row, O_RDONLY);

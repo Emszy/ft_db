@@ -83,10 +83,13 @@ int make_row_file(t_obj *obj)
 
 int add_table_to_db(t_obj *obj)
 {
-	if (choose_dbtab_path(obj, "ENTER DB NAME THAT YOUD LIKE TO ADD TO") == -1)
+	if (obj->filename.tab_path != 1)
 	{
-		ft_putstr("NO SUCH INFORMATION");
-		return(-1);
+		if (choose_dbtab_path(obj, "ENTER DB NAME THAT YOUD LIKE TO ADD TO") == -1)
+		{
+			ft_putstr("NO SUCH INFORMATION");
+			return(-1);
+		}
 	}
 	write_table_to_file(obj);
 	make_row_file(obj);
@@ -142,11 +145,13 @@ int delete_table(t_obj *obj)
 	char *line;
 
 	x = 0;
-
-	if (choose_dbtab_path(obj, "ENTER DB NAME THAT HAS A TABLE YOUD LIKE TO DELETE") == -1)
+	if (obj->filename.tab_path != 1)
 	{
-		ft_putstr("NO SUCH INFORMATION");
-		return(-1);
+		if (choose_dbtab_path(obj, "ENTER DB NAME THAT HAS A TABLE YOUD LIKE TO DELETE") == -1)
+		{
+			ft_putstr("NO SUCH INFORMATION");
+			return(-1);
+		}
 	}
 	printf("%s\n", obj->filename.table);
 	print_tables(obj);
@@ -214,10 +219,13 @@ int update_table(t_obj *obj)
 
 	x = 0;
 
-	if (choose_dbtab_path(obj, "ENTER DB NAME THAT HAS A TABLE YOUD LIKE TO UPDATE") == -1)
+	if (obj->filename.tab_path != 1)
 	{
-		ft_putstr("NO SUCH INFORMATION");
-		return(-1);
+		if (choose_dbtab_path(obj, "ENTER DB NAME THAT HAS A TABLE YOUD LIKE TO UPDATE") == -1)
+		{
+			ft_putstr("NO SUCH INFORMATION");
+			return(-1);
+		}
 	}
 	print_tables(obj);
 	delete = search_database_list(obj->filename.table, "ENTER DATABASE TABLE TO BE UPDATED");
