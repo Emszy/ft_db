@@ -56,6 +56,7 @@ void write_row_to_file(t_obj *obj)
 
    fptr = fopen(obj->filename.row, "a");
    row_name = get_answer("ENTER NAME OF NEW ROW");
+   obj->filename.col_name = row_name;
    if(fptr == NULL)
    {
       printf("Error!");   
@@ -63,6 +64,25 @@ void write_row_to_file(t_obj *obj)
    }
    fprintf(fptr, "%s\n", row_name);
    fclose(fptr);
+}
+
+int make_col_file(t_obj *obj)
+{
+	char *filename;
+	FILE *fptr;
+	filename = ft_strjoin(obj->filename.curr_dir, "/database/tables/rows/columns/");
+	filename = ft_strjoin(filename,  obj->filename.col_name);
+  	filename = ft_strjoin(filename, ".txt");
+
+  	printf("FILENAME:%s\n", filename);
+	fptr = fopen(filename, "a");
+	if(fptr == NULL)
+   	{
+      printf("Error!");   
+      exit(1);             
+   	}
+	fclose(fptr);
+  	return (0);
 }
 
 int add_row_to_table(t_obj *obj)
@@ -80,6 +100,7 @@ int add_row_to_table(t_obj *obj)
 	}
   	printf("%s\n", obj->filename.row);
 	write_row_to_file(obj);
+	make_col_file(obj);
 	return (0);
 }
 
@@ -95,6 +116,29 @@ int count_rows(t_obj *obj)
 		x++;
 	close(fd);
 	return (x);
+}
+
+int delete_col_file(t_obj *obj, char *delete)
+{
+	char *filename;
+	int ret = 0;
+	FILE *fptr = NULL;
+
+
+  	filename = ft_strjoin(obj->filename.curr_dir, "/database/tables/rows/columns/");
+  	filename = ft_strjoin(filename, delete);
+  	filename = ft_strjoin(filename, ".txt");
+	
+  	printf("%s\n", filename);
+
+  	fptr = fopen(filename, "w");
+	ret = remove(filename);
+   if(ret == 0) 
+      ft_putstr("File deleted successfully");
+   else 
+      ft_putstr("Error: unable to delete the file");
+   fclose(fptr);
+   return(0);
 }
 
 int delete_row(t_obj *obj)
@@ -145,7 +189,31 @@ int delete_row(t_obj *obj)
 		}
 	}
 	overwrite_db(obj->filename.row, new, x);
+	delete_col_file(obj, delete);
 	return (1);
+}
+
+int update_col_file_name(t_obj *obj, char *delete, char *update)
+{
+	char *filename;
+	int ret = 0;
+	char *new_filename;
+
+
+  	filename = ft_strjoin(obj->filename.curr_dir, "/database/tables/rows/columns/");
+  	filename = ft_strjoin(filename, delete);
+  	filename = ft_strjoin(filename, ".txt");
+	
+	new_filename = ft_strjoin(obj->filename.curr_dir, "/database/tables/rows/columns/");
+  	new_filename = ft_strjoin(new_filename, update);
+  	new_filename = ft_strjoin(new_filename, ".txt");
+
+	ret = rename(filename, new_filename);
+   if(ret == 0) 
+      ft_putstr("File updated successfully");
+   else 
+      ft_putstr("Error: unable to update the file");
+   return(0);
 }
 
 int update_row(t_obj *obj)
@@ -174,7 +242,7 @@ int update_row(t_obj *obj)
 	printf("%s\n", obj->filename.row);
 	print_rows(obj);
 	delete = search_database_list(obj->filename.row, "ENTER ROW TO BE UPDATED");
-	update_name = get_answer("WHAT DO YOU WANT TO CHAGE THE ROW NAME TO?");
+	update_name = get_answer("WHAT DO YOU WANT TO CHANGE THE ROW NAME TO?");
 	if (ft_strcmp(delete, "NO MATCH") == 0)
 	{
 		ft_putstr("DOESN'T MATCH");
@@ -205,5 +273,6 @@ int update_row(t_obj *obj)
 		}
 	}
 	overwrite_db(obj->filename.row, new, x);
+	update_col_file_name(obj, delete, update_name);
 	return (1);
 }

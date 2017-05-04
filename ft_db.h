@@ -66,6 +66,9 @@ typedef struct s_file_names
 	int tab_path;
 	char *row;
 	char *curr_row;
+	char *col_name;
+	char *curr_col;
+	int col_path;
 }				t_file_names;
  
 typedef struct s_obj
@@ -95,6 +98,7 @@ int count_tables(t_obj *obj);
 int delete_table(t_obj *obj);
 int update_table(t_obj *obj);
 int choose_dbrow_path(t_obj *obj, char *message);
+int add_row_to_table(t_obj *obj);
 int	print_rows(t_obj *obj);
 void write_row_to_file(t_obj *obj);
 int count_rows(t_obj *obj);

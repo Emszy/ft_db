@@ -1,197 +1,277 @@
 #include "ft_db.h"
 
-int bye(void)
+int choose_dbcol_path(t_obj *obj, char *message)
 {
-  exit(0);
+	char *row;
+
+	row = search_database_list(obj->filename.row, message);
+	if (ft_strcmp(row, "NO MATCH") == 0)
+		return(-1);
+  	obj->filename.col_name = ft_strjoin(obj->filename.curr_dir, "/database/tables/rows/columns/");
+  	obj->filename.col_name = ft_strjoin(obj->filename.col_name,  row);
+  	obj->filename.col_name = ft_strjoin(obj->filename.col_name, ".txt");
+  	obj->filename.curr_col = row;
+  	obj->filename.col_path = 1;
+
+  	return (0);
 }
 
-int key_hook(int keycode, t_mlx *mf)
+
+int	print_cols(t_obj *obj)
 {
-  if (keycode == 53)
-    bye();
-    printf("%d\n", keycode);
-  if(keycode == KEY_A)
-    ft_strjoin(mf->current_word, "a");
-  if(keycode == KEY_B)
-    ft_strjoin(mf->current_word, "b");
-  if(keycode == KEY_C)
-    ft_strjoin(mf->current_word, "c");
-  if(keycode == KEY_D)
-    ft_strjoin(mf->current_word, "d");
-  if(keycode == KEY_E)
-    ft_strjoin(mf->current_word, "e");
-  if(keycode == KEY_F)
-    ft_strjoin(mf->current_word, "f");
-  if(keycode == KEY_G)
-    ft_strjoin(mf->current_word, "g");
-  if(keycode == KEY_H)
-    ft_strjoin(mf->current_word, "h");
-  if(keycode == KEY_I)
-    ft_strjoin(mf->current_word, "i");
-  if(keycode == KEY_J)
-    ft_strjoin(mf->current_word, "j");
-  if(keycode == KEY_K)
-    ft_strjoin(mf->current_word, "k");
-  if(keycode == KEY_L)
-    ft_strjoin(mf->current_word, "l");
-  if(keycode == KEY_M)
-    ft_strjoin(mf->current_word, "m");
-  if(keycode == KEY_N)
-    ft_strjoin(mf->current_word, "n");
-  if(keycode == KEY_O)
-    ft_strjoin(mf->current_word, "o");
-  if(keycode == KEY_P)
-    ft_strjoin(mf->current_word, "p");
-  if(keycode == KEY_Q)
-    ft_strjoin(mf->current_word, "q");
-  if(keycode == KEY_R)
-    ft_strjoin(mf->current_word, "r");
-  if(keycode == KEY_S)
-    ft_strjoin(mf->current_word, "s");
-  if(keycode == KEY_T)
-    ft_strjoin(mf->current_word, "t");
-  if(keycode == KEY_U)
-    ft_strjoin(mf->current_word, "u");
-  if(keycode == KEY_V)
-    ft_strjoin(mf->current_word, "v");
-  if(keycode == KEY_W)
-    ft_strjoin(mf->current_word, "w");
-  if(keycode == KEY_X)
-    ft_strjoin(mf->current_word, "x");
-  if(keycode == KEY_Y)
-    ft_strjoin(mf->current_word, "y");
-  if(keycode == KEY_Z)
-    ft_strjoin(mf->current_word, "z");
-  if(keycode == KEY_SPACE)
-    ft_strjoin(mf->current_word, "space");
-  mlx_clear_window(mf->mlx, mf->window);
-  mlx_string_put(mf->mlx, mf->window, 500, 500, 0x00FFFFFF, mf->current_word);
-  
-return(0);
+	int		fd;
+	char	*string;
+
+	if (obj->filename.tab_path != 1)
+	{
+		if (choose_dbtab_path(obj, "ENTER DB NAME THAT YOUD LIKE TO SEE") == -1)
+		{
+			ft_putstr("NO SUCH INFORMATION");
+			return(-1);
+		}
+		if (choose_dbrow_path(obj, "ENTER DB NAME THAT YOUD LIKE TO SEE") == -1)
+		{
+		ft_putstr("NO SUCH INFORMATION");
+		return(-1);
+		}
+		if (choose_dbcol_path(obj, "ENTER ROW NAME THAT YOUD LIKE TO SEE TO") == -1)
+		{
+			ft_putstr("NO SUCH INFORMATION");
+			return(-1);
+		}
+	}
+	print_rows(obj);
+	fd = open(obj->filename.col_name, O_RDONLY);
+	while(get_next_line(fd, &string))
+	{
+		ft_putstr(string);
+		ft_putstr("   |   ");
+	}
+	ft_putstr("\n---------------");
+	ft_putstr("\n");
+	return(0);
 }
-int mouse_hook(int button,int x,int y)
+
+
+
+void write_col_to_file(t_obj *obj)
 {
-  printf("%d\n", x );
-  printf("%d\n", y );
-  printf("%d\n", button );
-return(0);
+	FILE *fptr;
+	char *col_name;
+
+   fptr = fopen(obj->filename.col_name, "a");
+   col_name = get_answer("ENTER NAME OF NEW COL");
+   obj->filename.col_name = col_name;
+   if(fptr == NULL)
+   {
+      printf("Error!");   
+      exit(1);             
+   }
+   fprintf(fptr, "%s\n", col_name);
+   fclose(fptr);
 }
-char *data_base_name(char *name, int x_pos, int y_pos, t_mlx *mf)
+
+
+int add_col_to_row(t_obj *obj)
 {
-  int letter_count;
-  int x;
-  int y;
-    y = y_pos;
-  while( y < 62)
-  {
-    x = x_pos;
-    letter_count = strlen(name);
-    while( x < (letter_count * 15) + 30)
-    {
-      mlx_pixel_put(mf->mlx,mf->window, x, y, 0x0004a504);
-      x++;
-    }
-    y++;
-  }
-  mlx_string_put(mf->mlx, mf->window, 42, 42, 0x00FFFFFF, name );
-  
-return 0;
+	if (choose_dbtab_path(obj, "ENTER DB NAME THAT YOUD LIKE TO ADD TO") == -1)
+	{
+		ft_putstr("NO SUCH INFORMATION");
+		return(-1);
+	}
+		printf("%s\n", obj->filename.curr_table);
+	if (choose_dbrow_path(obj, "ENTER TABLE NAME THAT YOUD LIKE TO ADD TO") == -1)
+	{
+		ft_putstr("NO SUCH INFORMATION");
+		return(-1);
+	}
+	if (choose_dbcol_path(obj, "ENTER ROW NAME THAT YOUD LIKE TO ADD TO") == -1)
+	{
+		ft_putstr("NO SUCH INFORMATION");
+		return(-1);
+	}
+  	printf("%s\n", obj->filename.row);
+	write_col_to_file(obj);
+	return (0);
 }
-void  rows_table(t_mlx *mf)
+
+
+
+int count_cols(t_obj *obj)
 {
-  int row;
-  int col;
-  col = 400;
-    while( col < COLNUM)
-    {
-      row = 100;
-      while(row < ROWNUM)
-      {
-        mlx_pixel_put(mf->mlx, mf->window, row, col, 0x00FFFFFF);
-        row++;
-      }
-      col+= 50;
-    }
+	int fd;
+	int x;
+	char *line;
+
+	x = 0;
+	fd = open(obj->filename.col_name, O_RDONLY);
+	while (get_next_line(fd, &line) == 1)
+		x++;
+	close(fd);
+	return (x);
 }
-void  col_table(t_mlx *mf)
+
+
+int delete_col(t_obj *obj)
 {
-  int row;
-  int col;
-  int width;
-  width = 100;
-  row = 200;
-  while(row < ROWNUM)
-    {
-        col = 400;
-        while( col < COLNUM)
-        {
-        mlx_pixel_put(mf->mlx, mf->window, row, col, 0x00FFFFFF);
-        col++;
-      }
-      row+= width;
-    }
+	char *delete;
+	int col_count;
+	char **new;
+	int x;
+	int fd;
+	char *line;
+
+	x = 0;
+
+	if (choose_dbtab_path(obj, "ENTER DB THAT YOUD LIKE A COL DELETED") == -1)
+	{
+		ft_putstr("NO SUCH INFORMATION");
+		return(-1);
+	}
+		printf("%s\n", obj->filename.curr_table);
+	if (choose_dbrow_path(obj, "ENTER DB TABLE THAT YOUD LIKE A COL DELETED") == -1)
+	{
+		ft_putstr("NO SUCH INFORMATION");
+		return(-1);
+	}
+	if (choose_dbcol_path(obj, "ENTER ROW NAME THAT YOUD LIKE TO ADD TO") == -1)
+	{
+		ft_putstr("NO SUCH INFORMATION");
+		return(-1);
+	}
+	printf("%s\n", obj->filename.col_name);
+	print_cols(obj);
+	delete = search_database_list(obj->filename.col_name, "ENTER COL TO BE DELETED");
+	if (ft_strcmp(delete, "NO MATCH") == 0)
+	{
+		ft_putstr("DOESN'T MATCH");
+		return (0);
+	}
+	printf("%s\n", delete);
+	col_count = count_cols(obj);
+	printf("%d\n", col_count);
+
+	
+	fd = open(obj->filename.col_name, O_RDONLY);
+	new = (char**)malloc(sizeof(char**) * col_count);
+	while (get_next_line(fd, &line) == 1)
+	{
+		if (ft_strcmp(delete, line) != 0)
+		{
+			new[x] = (char*)malloc(sizeof(char *) * ft_strlen(line) + 1);
+			ft_strcpy(new[x], line);
+			printf("%s\n", new[x]);
+			x++;
+		}
+	}
+	overwrite_db(obj->filename.col_name, new, x);
+	return (1);
 }
+
+int update_col(t_obj *obj)
+{
+	char *delete;
+	char *update_name;
+	int col_count;
+	char **new;
+	int x;
+	int fd;
+	char *line;
+
+	x = 0;
+
+	if (choose_dbtab_path(obj, "ENTER DB THAT YOUD LIKE A COL UPDATED") == -1)
+	{
+		ft_putstr("NO SUCH INFORMATION");
+		return(-1);
+	}
+		printf("%s\n", obj->filename.curr_table);
+	if (choose_dbrow_path(obj, "ENTER DB TABLE THAT YOUD LIKE A COL UPDATED") == -1)
+	{
+		ft_putstr("NO SUCH INFORMATION");
+		return(-1);
+	}
+	if (choose_dbcol_path(obj, "ENTER ROW NAME THAT YOUD LIKE A COL UPDATED") == -1)
+	{
+		ft_putstr("NO SUCH INFORMATION");
+		return(-1);
+	}
+	printf("%s\n", obj->filename.col_name);
+	print_cols(obj);
+	delete = search_database_list(obj->filename.col_name, "ENTER COL TO BE UPDATED");
+	update_name = get_answer("WHAT DO YOU WANT TO CHANGE THE COL NAME TO?");
+	if (ft_strcmp(delete, "NO MATCH") == 0)
+	{
+		ft_putstr("DOESN'T MATCH");
+		return (0);
+	}
+	printf("%s\n", delete);
+	col_count = count_cols(obj);
+	printf("%d\n", col_count);
+
+	fd = open(obj->filename.col_name, O_RDONLY);
+	new = (char**)malloc(sizeof(char**) * col_count);
+	while (get_next_line(fd, &line) == 1)
+	{
+		if (ft_strcmp(delete, line) == 0)
+		{
+			new[x] = (char*)malloc(sizeof(char *) * ft_strlen(update_name) + 1);
+			ft_strcpy(new[x], update_name);
+			printf("%s\n", new[x]);
+			x++;
+		}
+		else
+		{
+			new[x] = (char*)malloc(sizeof(char *) * ft_strlen(line) + 1);
+			ft_strcpy(new[x], line);
+			printf("%s\n", new[x]);
+			x++;
+		}
+	}
+	overwrite_db(obj->filename.col_name, new, x);
+	return (1);
+}
+
 int main(void)
 {
-  t_mlx *mf;
+	t_obj *obj;
 
-  mf = malloc(sizeof(t_mlx));
-  mf->mlx = mlx_init();
-  mf->name = malloc(20);
-  printf("%s\n", "What would you like to call youre data base?" );
-  fgets(mf->name, MAX_NAME_SIZE, stdin);
-  mf->window = mlx_new_window(mf->mlx, 1000, 1000, mf->name);
-  data_base_name(mf->name, 36, 42, mf);
-    rows_table(mf);
-      col_table(mf);
-  
-  mlx_mouse_hook ( mf->window, mouse_hook, mf->mlx);
-  mlx_key_hook ( mf->window, key_hook, mf->mlx);
-   mlx_hook(mf->window, 17, 0, bye, mf);
-  mlx_loop(mf->mlx);
-  return (0);
+	obj = malloc(sizeof(t_obj));
+	init_db_file(obj);
+
+	// CRUD for database names
+	// add_database(obj);
+	// search_database_list(obj->filename.db, "search");
+	// delete_database(obj);
+	// update_database_name(obj);
+	// print_database(obj->filename.db);
+
+
+	// CRUD FOR TABLES
+	// 	add_table_to_db(obj);
+	// 	print_tables(obj);
+	// 	delete_table(obj);
+	// 	update_table(obj);
+
+	// CRUD FOR COLS
+
+	 //add_row_to_table(obj);
+	// print_rows(obj);
+	// delete_row(obj);
+	// update_row(obj);
+	// print_rows(obj);
+
+	// CRUD FOR COLUMNS
+
+	//add_col_to_row(obj);
+	//print_cols(obj);
+	//delete_col(obj);
+	//update_col(obj);
+
+
+
+
+
+
+	return (0);
 }
-
-
-
-// int main(void)
-// {
-// 	t_obj *obj;
-
-// 	obj = malloc(sizeof(t_obj));
-// 	init_db_file(obj);
-
-
-
-// 	// CRUD for database names
-// 	//add_database(obj);
-// 	//search_database_list(obj->filename.db, "search"); //NEEDS DUPLICATE PRINT FIXING
-// 	//delete_database(obj);
-// 	//update_database_name(obj); // NEEDS FILENAME CHANGE
-// 	//print_database(obj->filename.db);
-
-
-// 	// CRUD FOR TABLES
-// 		//add_table_to_db(obj);
-// 		//print_tables(obj);
-// 		//delete_table(obj);
-// 		//update_table(obj);
-
-// 	//CRUD FOR ROWS
-
-// 	 //add_row_to_table(obj);
-// 	// print_rows(obj);
-// 	// delete_row(obj);
-// 	// update_row(obj);
-// 	// print_rows(obj);
-
-// 	//CRUD FOR COLUMNS
-
-
-
-
-
-
-
-// 	return (0);
-// }
