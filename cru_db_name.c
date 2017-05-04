@@ -88,8 +88,6 @@ int make_table_file(t_obj *obj, char *db_name)
   	return (0);
 }
 
-
-
 void add_database(t_obj *obj)
 {
 	FILE *fptr;
@@ -112,6 +110,29 @@ void add_database(t_obj *obj)
    fclose(fptr);
    make_table_file(obj, db_name);
 }
+
+int update_table_file_name(t_obj *obj, char *delete, char *update)
+{
+	char *filename;
+	char *new_filename;
+	int ret = 0;
+
+  	filename = ft_strjoin(obj->filename.curr_dir, "/database/tables/");
+  	filename = ft_strjoin(filename, delete);
+  	filename = ft_strjoin(filename, ".txt");
+
+  	new_filename = ft_strjoin(obj->filename.curr_dir, "/database/tables/");
+  	new_filename = ft_strjoin(new_filename, update);
+  	new_filename = ft_strjoin(new_filename, ".txt");
+  	
+	ret = rename(filename, new_filename);
+   if(ret == 0) 
+      ft_putstr("File renamed successfully");
+   else 
+      ft_putstr("Error: unable to rename the file");
+   return(0);
+}
+
 
 int update_database_name(t_obj *obj)
 {
@@ -152,5 +173,7 @@ int update_database_name(t_obj *obj)
 	}
 	printf("%d\n", db_count);
 	overwrite_db(obj->filename.db, new, db_count);
+	update_table_file_name(obj, delete, update_name);
+
 	return (1);
 }

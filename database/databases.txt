@@ -1,5 +1,8 @@
-monsters
 planes
 bugs
 oceans
-planets
+monsters
+money
+newnew
+new
+old

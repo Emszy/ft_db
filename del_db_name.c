@@ -1,5 +1,26 @@
 #include "ft_db.h"
 
+int delete_table_file(t_obj *obj, char *delete)
+{
+	char *filename;
+	int ret = 0;
+	FILE *fptr = NULL;
+
+  	filename = ft_strjoin(obj->filename.curr_dir, "/database/tables/");
+  	filename = ft_strjoin(filename, delete);
+  	filename = ft_strjoin(filename, ".txt");
+  	
+  	fptr = fopen(filename, "w");
+	ret = remove(filename);
+   if(ret == 0) 
+      ft_putstr("File deleted successfully");
+   else 
+      ft_putstr("Error: unable to delete the file");
+   fclose(fptr);
+   return(0);
+}
+
+
 void overwrite_db(char *filename, char **db_names, int db_count)
 {
 	FILE *fptr;
@@ -17,7 +38,6 @@ void overwrite_db(char *filename, char **db_names, int db_count)
 		fprintf(fptr, "%s\n", db_names[x]);
 		x++;
 	}
-	
 	fclose(fptr);
 }
 
@@ -65,9 +85,7 @@ int delete_database(t_obj *obj)
 			x++;
 		}
 	}
-	printf("%d\n", x);
-	printf("%d\n", db_count);
-
 	overwrite_db(obj->filename.db, new, x);
+	delete_table_file(obj, delete);
 	return (1);
 }
