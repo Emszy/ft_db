@@ -1,17 +1,16 @@
-//
-// str 2 wordtab & co
-// by ol
 
+/* str 2 wordtab & co
+ by ol */
 
 #include <stdlib.h>
 #include <string.h>
 
-int	mlx_int_str_str(char *str,char *find,int len)
+int    mlx_int_str_str(char *str, char *find, int len)
 {
-  int	len_f;
-  int	pos;
-  char	*s;
-  char	*f;
+  int	   len_f;
+  int	   pos;
+  char	 *s;
+  char	 *f;
 
   len_f = strlen(find);
   if (len_f>len)
@@ -26,13 +25,13 @@ int	mlx_int_str_str(char *str,char *find,int len)
           return (pos);
       str ++;
       pos ++;
-    }
-  return (-1);
+  	}
+    return (-1);
 }
 
 
 
-int	mlx_int_str_str_cote(char *str,char *find,int len)
+int	   mlx_int_str_str_cote(char *str,char *find,int len)
 {
   int	len_f;
   int	pos;
@@ -64,7 +63,7 @@ int	mlx_int_str_str_cote(char *str,char *find,int len)
 }
 
 
-char	**mlx_int_str_to_wordtab(char *str)
+char    **mlx_int_str_to_wordtab(char *str)
 {
   char	**tab;
   int	pos;

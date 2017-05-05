@@ -1,28 +1,29 @@
 #include "ft_db.h"
 
-int choose_dbcol_path(t_obj *obj, char *message)
+int		choose_dbcol_path(t_obj *obj, char *message)
 {
 	char *row;
 
 	row = search_database_list(obj->filename.row, message);
 	if (ft_strcmp(row, "NO MATCH") == 0)
-		return(-1);
-	obj->filename.col_name = ft_strjoin(obj->filename.curr_dir, "/database/tables/rows/columns/");
+		return (-1);
+	obj->filename.col_name = ft_strjoin(obj->filename.curr_dir, \
+	 "/database/tables/rows/columns/");
 	obj->filename.col_name = ft_strjoin(obj->filename.col_name, row);
 	obj->filename.col_name = ft_strjoin(obj->filename.col_name, ".txt");
 	obj->filename.curr_col = row;
 	obj->filename.col_path = 1;
-  	return (0);
+	return (0);
 }
 
-int check_path_for_col(t_obj *obj)
+int		check_path_for_col(t_obj *obj)
 {
 	if (obj->filename.tab_path != 1)
 	{
 		if (choose_dbtab_path(obj, "ENTER DB NAME THAT YOUD LIKE TO SEE") == -1)
 		{
 			ft_putstr("NO SUCH INFORMATION");
-			return(-1);
+			return (-1);
 		}
 	}
 	if (obj->filename.row_path != 1)
@@ -30,21 +31,21 @@ int check_path_for_col(t_obj *obj)
 		if (choose_dbrow_path(obj, "ENTER DB NAME THAT YOUD LIKE TO SEE") == -1)
 		{
 			ft_putstr("NO SUCH INFORMATION");
-			return(-1);
+			return (-1);
 		}
 	}
 	if (obj->filename.col_path != 1)
 	{
-		if (choose_dbcol_path(obj, "ENTER ROW NAME THAT YOUD LIKE TO SEE TO") == -1)
+		if (choose_dbcol_path(obj, "ENTER ROW NAME") == -1)
 		{
 			ft_putstr("NO SUCH INFORMATION");
-			return(-1);
+			return (-1);
 		}
 	}
-	return(1);
+	return (1);
 }
 
-t_table check_save_path(t_obj *obj, t_table table)
+t_table		check_save_path(t_obj *obj, t_table table)
 {
 	if (obj->filename.tab_path != 1)
 	{
@@ -58,7 +59,7 @@ t_table check_save_path(t_obj *obj, t_table table)
 	if (obj->filename.row_path != 1)
 	{
 		printf("%s\n", obj->filename.curr_row);
-		if (choose_dbrow_path(obj, "ENTER DB table THAT YOUD LIKE TO SEE") == -1)
+		if (choose_dbrow_path(obj, "Which DB table would LIKE TO SEE") == -1)
 		{
 			table.died = 1;
 			return (table);
@@ -67,11 +68,11 @@ t_table check_save_path(t_obj *obj, t_table table)
 	return (table);
 }
 
-t_table	save_rows(t_obj *obj)
+t_table			save_rows(t_obj *obj)
 {
-	int		fd;
-	char	*string;
-	int x;
+	int			fd;
+	char		*string;
+	int			x;
 	t_table		table;
 
 	table.total_rows = 0;
@@ -79,22 +80,20 @@ t_table	save_rows(t_obj *obj)
 	check_save_path(obj, table);
 	fd = open(obj->filename.row, O_RDONLY);
 	ft_putstr(ANSI_COLOR_BLUE);
-	
 	table.rows = (char**)malloc(sizeof(char**) * count_rows(obj) + 1);
-	while(get_next_line(fd, &string))
+	while (get_next_line(fd, &string))
 	{
 		table.rows[x] = malloc(sizeof(char*) * ft_strlen(string) + 1);
 		table.rows[x] = ft_strjoin(table.rows[x], string);
 		x++;
 		table.total_rows++;
 	}
-	return(table);
+	return (table);
 }
 
-
-void print_table_row(t_table table)
+void		print_table_row(t_table table)
 {
-	int x;
+	int		x;
 
 	x = 0;
 	ft_putstr("ROWS:\n");
@@ -108,67 +107,69 @@ void print_table_row(t_table table)
 	ft_putstr("\n");
 }
 
-char *iterate_dbcol_path(t_obj *obj, char *row)
-{	
+char		*iterate_dbcol_path(t_obj *obj, char *row)
+{
 	t_table table;
 
-	table.col_path = ft_strjoin(obj->filename.curr_dir, "/database/tables/rows/columns/");
+	table.col_path = ft_strjoin(obj->filename.curr_dir, \
+		"/database/tables/rows/columns/");
 	table.col_path = ft_strjoin(table.col_path, row);
 	table.col_path = ft_strjoin(table.col_path, ".txt");
-  	return (table.col_path);
-}
-int file_exists(const char *fname)
-{
-    FILE *file;
-    if ((file = fopen(fname, "r")))
-    {
-        fclose(file);
-        return 1;
-    }
-    return 0;
+	return (table.col_path);
 }
 
-int get_total_columns(t_obj *obj)
+int			file_exists(const char *fname)
 {
-	t_table		table;
-	int fd;
-	char *string;
-	int row;
-	int total;
+	FILE *file;
+
+	if ((file = fopen(fname, "r")))
+	{
+		fclose(file);
+		return (1);
+	}
+	return (0);
+}
+
+int		get_total_columns(t_obj *obj)
+{
+	t_table	table;
+	int 		fd;
+	char 		*string;
+	int 		row;
+	int 		total;
 
 	total = 0;
 	row = 0;
 	table = save_rows(obj);
-	while(row < table.total_rows)
+	while (row < table.total_rows)
 	{
 		table.col_path = iterate_dbcol_path(obj, table.rows[row]);
 		if (file_exists(table.col_path))
 		{
 			fd = open(table.col_path, O_RDONLY);
-			while(get_next_line(fd, &string))
+			while (get_next_line(fd, &string))
 				total++;
 		}
 		row++;
 	}
 	free(table.rows);
-	return(total);
-
+	return (total);
 }
 
-void print_in_order(char** all_cols, int total_cols)
+void		print_in_order(char** all_cols, int total_cols)
 {
-	int index;
-	int x;
+	int 	index;
+	int		x;
 
 	x = 0;
 	while (x < total_cols)
 	{
 		index = 0;
-		while(ft_strcmp(all_cols[index], END_DELIM)!= 0)
+		while (ft_strcmp(all_cols[index], END_DELIM)!= 0)
 		{
-			if(ft_strcmp(all_cols[index + x], COL_DELIM )!= 0 && ft_strcmp(all_cols[index + x], END_DELIM)!= 0)
+			if (ft_strcmp(all_cols[index + x], COL_DELIM ) != 0 && ft_strcmp(all_cols[index + x], END_DELIM)!= 0)
 				printf("%10.10s |", all_cols[index + x]);
-			while(ft_strcmp(all_cols[index], COL_DELIM )!= 0 && ft_strcmp(all_cols[index], END_DELIM)!= 0)
+			while( ft_strcmp(all_cols[index], COL_DELIM ) != 0 && ft_strcmp(all_cols[index], END_DELIM)!= 0)
 				index++;
 			index++;
 		}
@@ -178,7 +179,7 @@ void print_in_order(char** all_cols, int total_cols)
 	printf("\n");
 }
 
-t_table save_column_file(t_table table)
+t_table		save_column_file(t_table table)
 {
 	int		fd;
 	char	*string;
@@ -195,7 +196,7 @@ t_table save_column_file(t_table table)
 		return (table);
 }
 
-int	print_cols(t_obj *obj)
+int			print_cols(t_obj *obj)
 {
 	t_table		table;
 	int row;
@@ -226,7 +227,7 @@ int	print_cols(t_obj *obj)
 
 
 
-void write_col_to_file(t_obj *obj, t_table table)
+void 		write_col_to_file(t_obj *obj, t_table table)
 {
 	FILE *fptr;
 	char *col_name;
@@ -267,7 +268,7 @@ int add_col_to_row(t_obj *obj)
 
 
 
-int count_cols(char *filename)
+int 		count_cols(char *filename)
 {
 	int fd;
 	int x;
@@ -308,7 +309,7 @@ t_read_line update_loop(t_obj *obj, char *delete, char *update_name, t_read_line
 	return (rd);
 }
 
-int delete_col(t_obj *obj)
+int 		delete_col(t_obj *obj)
 {
 	char *delete;
 	char *update_name;
@@ -331,7 +332,7 @@ int delete_col(t_obj *obj)
 
 
 
-int update_col(t_obj *obj)
+int 		update_col(t_obj *obj)
 {
 	char *delete;
 	char *update_name;
