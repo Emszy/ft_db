@@ -64,33 +64,27 @@ int count_databases(t_obj *obj)
 int delete_database(t_obj *obj)
 {
 	char *delete;
-	char *line;
-	int fd;
-	int db_count;
-	int x;
-	char **new;
-
-	db_count = 0;
-	x = 0;
+	t_read_line rd;
+	
+	rd.x = 0;
 	delete = search_database_list(obj->filename.db, "ENTER DATABASE NAME TO BE DELETED");
 	if (ft_strcmp(delete, "NO MATCH\n") == 0)
 	{
 		ft_putstr(delete);
-		return (0);
+		return (-1);
 	}
-	db_count = count_databases(obj);
-	fd = open(obj->filename.db, O_RDONLY);
-	new = (char**)malloc(sizeof(char**) * db_count);
-	while (get_next_line(fd, &line) == 1)
+	rd.fd = open(obj->filename.db, O_RDONLY);
+	rd.new_str = (char**)malloc(sizeof(char**) * count_databases(obj));
+	while (get_next_line(rd.fd, &rd.line) == 1)
 	{
-		if (ft_strcmp(delete, line) != 0)
+		if (ft_strcmp(delete, rd.line) != 0)
 		{
-			new[x] = (char*)malloc(sizeof(char *) * ft_strlen(line) + 1);
-			ft_strcpy(new[x], line);
-			x++;
+			rd.new_str[rd.x] = (char*)malloc(sizeof(char *) * ft_strlen(rd.line) + 1);
+			ft_strcpy(rd.new_str[rd.x], rd.line);
+			rd.x++;
 		}
 	}
-	overwrite_db(obj->filename.db, new, x);
+	overwrite_db(obj->filename.db, rd.new_str, rd.x);
 	delete_table_file(obj, delete);
 	return (1);
 }

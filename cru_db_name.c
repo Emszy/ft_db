@@ -14,7 +14,6 @@ int	print_database(char *database_directory)
 	}
 	ft_putstr("---------------");
 	ft_putstr(ANSI_COLOR_RESET);
-
 	ft_putstr("\n");
 	return(0);
 }
