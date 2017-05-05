@@ -91,6 +91,7 @@ typedef struct s_table
 	int total_cols;
 	char **columns;
 	char *col_path;
+	int x;
 	int died;
 }				t_table;
 

@@ -165,45 +165,47 @@ void print_in_order(char** all_cols, int total_cols)
 	printf("\n");
 }
 
-int	print_cols(t_obj *obj)
+t_table save_column_file(t_table table)
 {
 	int		fd;
 	char	*string;
+
+	fd = open(table.col_path, O_RDONLY);
+	while(get_next_line(fd, &string))
+		{
+			table.columns[table.x] = (char*)malloc(sizeof(char*) * ft_strlen(string) + 1);
+			table.columns[table.x] = ft_strcpy(table.columns[table.x], string);
+			table.x++;
+			table.total_cols++;
+		}
+		close(fd);
+		return (table);
+}
+
+int	print_cols(t_obj *obj)
+{
 	t_table		table;
 	int row;
-	char **all_cols;
-	int total_cols;
-	int x;
-
-	x = 0;
+	
 	row = -1;
 	if (check_path(obj) == -1)
 		return(-1);
-
 	table = save_rows(obj);
-	all_cols = (char**)malloc(sizeof(char**) * (get_total_columns(obj) + table.total_rows + 1));
+	table.columns = (char**)malloc(sizeof(char**) * (get_total_columns(obj) + table.total_rows + 1));
 	while(++row < table.total_rows)
 	{	
-		total_cols = 0;
+		table.total_cols = 0;
 		table.col_path = iterate_dbcol_path(obj, table.rows[row]);
-		fd = open(table.col_path, O_RDONLY);
-		while(get_next_line(fd, &string))
-		{
-			all_cols[x] = (char*)malloc(sizeof(char*) * ft_strlen(string) + 1);
-			all_cols[x] = ft_strcpy(all_cols[x], string);
-			x++;
-			total_cols++;
-		}
-		all_cols[x] = (char*)malloc(sizeof(char*) * ft_strlen(COL_DELIM) + 1);
-		all_cols[x] = ft_strcpy(all_cols[x], COL_DELIM);
-		x++;
+		table = save_column_file(table);
+		table.columns[table.x] = (char*)malloc(sizeof(char*) * ft_strlen(COL_DELIM) + 1);
+		table.columns[table.x] = ft_strcpy(table.columns[table.x], COL_DELIM);
+		table.x++;
 	}
-	all_cols[x] = (char*)malloc(sizeof(char*) * ft_strlen(END_DELIM) + 1);
-	all_cols[x] = ft_strcpy(all_cols[x], END_DELIM);
-
+	table.columns[table.x] = (char*)malloc(sizeof(char*) * ft_strlen(END_DELIM) + 1);
+	table.columns[table.x] = ft_strcpy(table.columns[table.x], END_DELIM);
 	print_table_row(table);
 	printf("\n\n\n");
-	print_in_order(all_cols, total_cols);
+	print_in_order(table.columns, table.total_cols);
 	return(0);
 }
 

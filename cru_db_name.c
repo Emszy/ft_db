@@ -27,11 +27,9 @@ char *search_database_list(char *filename, char *message)
 	char	*db_name;
 	char	*ret;
 
-	
 	match = 0;
 	fd = open(filename, O_RDONLY);
 	print_database(filename);
-
 	db_name = get_answer(message);
 	while (get_next_line(fd, &line) == 1)
 	{
@@ -43,11 +41,7 @@ char *search_database_list(char *filename, char *message)
 		}
 	}
 	if (match == 0)
-	{
-		ret = (char*)malloc(sizeof(char*) * 8);
-		ret = "NO MATCH";
-		return (ret);
-	}
+		return ("NO MATCH");
 	return (ret);
 }
 
