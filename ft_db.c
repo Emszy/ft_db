@@ -26,9 +26,15 @@ void datacol_nav(t_obj *obj)
 		if (usr_crud_choice == 1)
 			add_col_to_row(obj);
 		if (usr_crud_choice == 2)
+		{
+			obj->filename.col_path = 0;
 			delete_col(obj);
+		}
 		if (usr_crud_choice == 3)
+		{
+			obj->filename.col_path = 0;
 			update_col(obj);
+		}
 		if (usr_crud_choice == 4)
 		{
 			obj->filename.col_path = 0;
@@ -51,6 +57,7 @@ void datarow_nav(t_obj *obj)
 	int in_row_dir;
 	int usr_crud_choice;
 	char *crud_choice;
+	
 	in_row_dir = 1;
 	while (in_row_dir)
 	{	

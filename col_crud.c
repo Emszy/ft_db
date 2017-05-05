@@ -44,16 +44,8 @@ int check_path(t_obj *obj)
 	return(1);
 }
 
-
-t_table	save_rows(t_obj *obj)
+t_table check_save_path(t_obj *obj, t_table table)
 {
-	int		fd;
-	char	*string;
-	int x;
-	t_table		table;
-	table.total_rows = 0;
-
-	x = 0;
 	if (obj->filename.tab_path != 1)
 	{
 		if (choose_dbtab_path(obj, "ENTER DB NAME THAT YOUD LIKE TO SEE") == -1)
@@ -72,6 +64,19 @@ t_table	save_rows(t_obj *obj)
 			return (table);
 		}
 	}
+	return (table);
+}
+
+t_table	save_rows(t_obj *obj)
+{
+	int		fd;
+	char	*string;
+	int x;
+	t_table		table;
+
+	table.total_rows = 0;
+	x = 0;
+	check_save_path(obj, table);
 	fd = open(obj->filename.row, O_RDONLY);
 	ft_putstr(ANSI_COLOR_BLUE);
 	
