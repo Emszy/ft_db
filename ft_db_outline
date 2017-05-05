@@ -68,9 +68,8 @@ then see what Action they want to do,
 
 
 
-
-
-
+take the saved rows and iterate on by one:
+open file and save each col into a char**
 
 
 

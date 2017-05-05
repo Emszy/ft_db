@@ -167,7 +167,7 @@ int main(void)
 	while(tru)
 	{
 
-		print_database(obj->filename.db);
+		
 		usr_dir_choice = 0;
 		dir_choice = get_answer("Enter 1 to navigate to databases\nEnter 2 to navigate to a table\nEnter 3 to navigate to table rows\nEnter 4 to navigate to row columns\nEnter 5 to quit Program\n");
 

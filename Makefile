@@ -26,7 +26,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ) ft_db.h
 	make -C libft/
-	gcc $(FLAGS) -I /libft -c $(SRC)
+	gcc -g $(FLAGS) -I /libft -c $(SRC)
 	gcc -o $(NAME) $(OBJ) -lm -L libft/ -lft minilibx_macos/libmlx.a -framework OpenGL -framework AppKit
 
 clean:

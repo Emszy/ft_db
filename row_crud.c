@@ -24,15 +24,14 @@ int choose_dbrow_path(t_obj *obj, char *message)
 		ft_putstr(ANSI_COLOR_RESET);
 		return (-1);
 	}
-
-
-  	return (0);
+	return (0);
 }
 
 int	print_rows(t_obj *obj)
 {
 	int		fd;
 	char	*string;
+	
 	if (obj->filename.tab_path != 1)
 	{
 		if (choose_dbtab_path(obj, "ENTER DB NAME THAT YOUD LIKE TO SEE") == -1)
@@ -48,7 +47,7 @@ int	print_rows(t_obj *obj)
 			return(-1);
 	}
 	fd = open(obj->filename.row, O_RDONLY);
-	ft_putstr("---------------\n");
+	ft_putstr("ROWS\n---------------\n");
 	while(get_next_line(fd, &string))
 	{
 		ft_putstr(string);
@@ -58,6 +57,7 @@ int	print_rows(t_obj *obj)
 	ft_putstr("\n");
 	return(0);
 }
+
 
 
 void write_row_to_file(t_obj *obj)
@@ -70,7 +70,7 @@ void write_row_to_file(t_obj *obj)
    if (check_duplicates(obj->filename.row, row_name) == 1)
 	{
 		ft_putstr("!!!DUPLICATE DATABASE, PLEASE CHOOSE ANOTHER NAME!!!\n");
-		write_table_to_file(obj);
+		write_row_to_file(obj);
   		return ;
 	}
 

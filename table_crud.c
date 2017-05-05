@@ -22,11 +22,13 @@ int	print_tables(t_obj *obj)
 
 	if (obj->filename.tab_path != 1)
 	{
-		if (choose_dbtab_path(obj, "Which DB Table WOULD YOU LIKE TO SEE?")== -1) 
+		if (choose_dbtab_path(obj, "TABLES")== -1) 
 			return (-1);
 	}
 	fd = open(obj->filename.table, O_RDONLY);
-	ft_putstr("---------------\n");
+	ft_putstr(ANSI_COLOR_BLUE);
+
+	ft_putstr("TABLES\n---------------\n");
 	while(get_next_line(fd, &string))
 	{
 		ft_putstr(string);
@@ -34,6 +36,7 @@ int	print_tables(t_obj *obj)
 	}
 	ft_putstr("---------------");
 	ft_putstr("\n");
+	ft_putstr(ANSI_COLOR_RESET);
 	return(0);
 }
 
@@ -68,8 +71,6 @@ int make_row_file(t_obj *obj)
 	filename = ft_strjoin(obj->filename.curr_dir, "/database/tables/rows/");
 	filename = ft_strjoin(filename, obj->filename.curr_row);
   	filename = ft_strjoin(filename, ".txt");
-
-  	printf("FILENAME:%s\n", filename);
 	fptr = fopen(filename, "a");
 	if(fptr == NULL)
    	{
@@ -153,7 +154,6 @@ int delete_table(t_obj *obj)
 			return(-1);
 		}
 	}
-	printf("%s\n", obj->filename.table);
 	print_tables(obj);
 	delete = search_database_list(obj->filename.table, "ENTER DATABASE TABLE TO BE DELETED");
 	if (ft_strcmp(delete, "NO MATCH") == 0)
@@ -161,11 +161,7 @@ int delete_table(t_obj *obj)
 		ft_putstr("DOESN'T MATCH");
 		return (0);
 	}
-	printf("%s\n", delete);
-	table_count = count_tables(obj);
-	printf("%d\n", table_count);
-
-	
+	table_count = count_tables(obj);	
 	fd = open(obj->filename.table, O_RDONLY);
 	new = (char**)malloc(sizeof(char**) * table_count);
 	while (get_next_line(fd, &line) == 1)
@@ -189,21 +185,18 @@ int update_row_file_name(t_obj *obj, char *delete, char *update)
 	int ret = 0;
 	char *new_filename;
 
-
   	filename = ft_strjoin(obj->filename.curr_dir, "/database/tables/rows/");
   	filename = ft_strjoin(filename, delete);
   	filename = ft_strjoin(filename, ".txt");
-	
 	new_filename = ft_strjoin(obj->filename.curr_dir, "/database/tables/rows/");
   	new_filename = ft_strjoin(new_filename, update);
   	new_filename = ft_strjoin(new_filename, ".txt");
-
 	ret = rename(filename, new_filename);
-   if(ret == 0) 
-      ft_putstr("File deleted successfully");
-   else 
-      ft_putstr("Error: unable to delete the file");
-   return(0);
+   	if(ret == 0) 
+      ft_putstr("File updated successfully\n");
+   	else 
+      ft_putstr("Error: unable to update the file\n");
+   	return(0);
 }
 
 

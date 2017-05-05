@@ -6,15 +6,12 @@ int	print_database(char *database_directory)
 	char	*str;
 	fd = open(database_directory, O_RDONLY);
 	ft_putstr(ANSI_COLOR_BLUE);
-	ft_putstr("DATABASES:\n---------------\n");
+	ft_putstr("DATABASES\n---------------\n");
 	while(get_next_line(fd,&str))
 	{
-		ft_putstr(ANSI_COLOR_BLUE);
 		ft_putstr(str);
-		ft_putstr(ANSI_COLOR_RESET);
 		ft_putstr("\n");
 	}
-	ft_putstr(ANSI_COLOR_BLUE);
 	ft_putstr("---------------");
 	ft_putstr(ANSI_COLOR_RESET);
 

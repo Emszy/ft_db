@@ -54,7 +54,8 @@
 #define ANSI_COLOR_CYAN    "\x1b[36m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
-
+#define COL_DELIM			"kdsh1blj2hs371ajhb009"
+#define END_DELIM			"mfehbwpwijfdubew0weh7"
 
 typedef struct s_mlx 
 {
@@ -82,7 +83,28 @@ typedef struct s_file_names
 	int col_path;
 	int in_col_dir;
 }				t_file_names;
- 
+
+typedef struct s_table
+{
+	char **rows;
+	int total_rows;
+	int total_cols;
+	char **columns;
+	char *col_path;
+	int died;
+}				t_table;
+
+typedef struct s_rd_line
+{
+	int fd;
+	char *line;
+	char **new_str;
+	int x;
+
+}				t_read_line;
+
+
+
 typedef struct s_obj
 {
 	t_file_names filename;
@@ -119,9 +141,9 @@ int delete_row(t_obj *obj);
 int update_row(t_obj *obj);
 int choose_dbcol_path(t_obj *obj, char *message);
 int	print_cols(t_obj *obj);
-void write_col_to_file(t_obj *obj);
+void write_col_to_file(t_obj *obj, t_table table);
 int add_col_to_row(t_obj *obj);
-int count_cols(t_obj *obj);
+int count_cols(char *filename);
 int delete_col(t_obj *obj);
 int update_col(t_obj *obj);
 void datacol_nav(t_obj *obj);
