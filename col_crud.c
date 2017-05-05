@@ -15,7 +15,7 @@ int choose_dbcol_path(t_obj *obj, char *message)
   	return (0);
 }
 
-int check_path(t_obj *obj)
+int check_path_for_col(t_obj *obj)
 {
 	if (obj->filename.tab_path != 1)
 	{
@@ -84,7 +84,7 @@ t_table	save_rows(t_obj *obj)
 	while(get_next_line(fd, &string))
 	{
 		table.rows[x] = malloc(sizeof(char*) * ft_strlen(string) + 1);
-		ft_strcpy(table.rows[x], string);
+		table.rows[x] = ft_strjoin(table.rows[x], string);
 		x++;
 		table.total_rows++;
 	}
@@ -109,13 +109,24 @@ void print_table_row(t_table table)
 }
 
 char *iterate_dbcol_path(t_obj *obj, char *row)
-{	t_table table;
+{	
+	t_table table;
+
 	table.col_path = ft_strjoin(obj->filename.curr_dir, "/database/tables/rows/columns/");
 	table.col_path = ft_strjoin(table.col_path, row);
 	table.col_path = ft_strjoin(table.col_path, ".txt");
   	return (table.col_path);
 }
-
+int file_exists(const char *fname)
+{
+    FILE *file;
+    if ((file = fopen(fname, "r")))
+    {
+        fclose(file);
+        return 1;
+    }
+    return 0;
+}
 
 int get_total_columns(t_obj *obj)
 {
@@ -131,9 +142,12 @@ int get_total_columns(t_obj *obj)
 	while(row < table.total_rows)
 	{
 		table.col_path = iterate_dbcol_path(obj, table.rows[row]);
-		fd = open(table.col_path, O_RDONLY);
-		while(get_next_line(fd, &string))
-			total++;
+		if (file_exists(table.col_path))
+		{
+			fd = open(table.col_path, O_RDONLY);
+			while(get_next_line(fd, &string))
+				total++;
+		}
 		row++;
 	}
 	free(table.rows);
@@ -157,7 +171,6 @@ void print_in_order(char** all_cols, int total_cols)
 			while(ft_strcmp(all_cols[index], COL_DELIM )!= 0 && ft_strcmp(all_cols[index], END_DELIM)!= 0)
 				index++;
 			index++;
-			
 		}
 		printf("\n");
 		x++;
@@ -174,7 +187,7 @@ t_table save_column_file(t_table table)
 	while(get_next_line(fd, &string))
 		{
 			table.columns[table.x] = (char*)malloc(sizeof(char*) * ft_strlen(string) + 1);
-			table.columns[table.x] = ft_strcpy(table.columns[table.x], string);
+			table.columns[table.x] = ft_strjoin(table.columns[table.x], string);
 			table.x++;
 			table.total_cols++;
 		}
@@ -188,24 +201,26 @@ int	print_cols(t_obj *obj)
 	int row;
 	
 	row = -1;
-	if (check_path(obj) == -1)
+	if (check_path_for_col(obj) == -1)
 		return(-1);
 	table = save_rows(obj);
-	table.columns = (char**)malloc(sizeof(char**) * (get_total_columns(obj) + table.total_rows + 1));
+	table.columns = (char**)malloc(sizeof(char**) * (get_total_columns(obj) + table.total_rows + 20));
 	while(++row < table.total_rows)
 	{	
 		table.total_cols = 0;
 		table.col_path = iterate_dbcol_path(obj, table.rows[row]);
-		table = save_column_file(table);
-		table.columns[table.x] = (char*)malloc(sizeof(char*) * ft_strlen(COL_DELIM) + 1);
-		table.columns[table.x] = ft_strcpy(table.columns[table.x], COL_DELIM);
-		table.x++;
+			table = save_column_file(table);
+			table.columns[table.x] = (char*)malloc(sizeof(char*) * ft_strlen(COL_DELIM) + 1);
+			table.columns[table.x] = ft_strcpy(table.columns[table.x], COL_DELIM);
+			table.x++;
 	}
 	table.columns[table.x] = (char*)malloc(sizeof(char*) * ft_strlen(END_DELIM) + 1);
 	table.columns[table.x] = ft_strcpy(table.columns[table.x], END_DELIM);
 	print_table_row(table);
 	printf("\n\n\n");
 	print_in_order(table.columns, table.total_cols);
+	free(table.rows);
+	free(table.columns);
 	return(0);
 }
 
@@ -238,7 +253,7 @@ int add_col_to_row(t_obj *obj)
 
 	row = 0;
 	col = 0;
-	if (check_path(obj) == -1)
+	if (check_path_for_col(obj) == -1)
 		return(-1);
 	table = save_rows(obj);
 	while(row < table.total_rows)
@@ -300,7 +315,7 @@ int delete_col(t_obj *obj)
 	t_read_line rd;
 	
 	rd.x = 0;
-	if (check_path(obj) == -1)
+	if (check_path_for_col(obj) == -1)
 		return(-1);
 	delete = search_database_list(obj->filename.col_name, "ENTER COL TO BE UPDATED");
 	if (ft_strcmp(delete, "NO MATCH") == 0)
@@ -323,7 +338,7 @@ int update_col(t_obj *obj)
 	t_read_line rd;
 	
 	rd.x = 0;
-	if (check_path(obj) == -1)
+	if (check_path_for_col(obj) == -1)
 		return(-1);
 	delete = search_database_list(obj->filename.col_name, "ENTER COL TO BE UPDATED");
 	if (ft_strcmp(delete, "NO MATCH") == 0)

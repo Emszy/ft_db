@@ -41,7 +41,10 @@ char *search_database_list(char *filename, char *message)
 		}
 	}
 	if (match == 0)
-		return ("NO MATCH");
+	{
+		ret = (char*)malloc(sizeof(char*) * 8);
+		ret = "NO MATCH";
+	}
 	return (ret);
 }
 
@@ -169,7 +172,6 @@ int update_database_name(t_obj *obj)
 			x++;
 		}
 	}
-	printf("%d\n", db_count);
 	overwrite_db(obj->filename.db, new, db_count);
 	update_table_file_name(obj, delete, update_name);
 

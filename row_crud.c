@@ -27,25 +27,34 @@ int choose_dbrow_path(t_obj *obj, char *message)
 	return (0);
 }
 
-int	print_rows(t_obj *obj)
+int check_path_for_rows(t_obj *obj)
 {
-	int		fd;
-	char	*string;
-	
 	if (obj->filename.tab_path != 1)
 	{
 		if (choose_dbtab_path(obj, "ENTER DB NAME THAT YOUD LIKE TO SEE") == -1)
 		{
-			ft_putstr("NO SUCH INFORMATION\n");
+			ft_putstr("NO SUCH INFORMATION");
 			return(-1);
 		}
 	}
 	if (obj->filename.row_path != 1)
 	{
-		printf("%s\n", obj->filename.curr_row);
-		if (choose_dbrow_path(obj, "ENTER DB table THAT YOUD LIKE TO SEE") == -1)
+		if (choose_dbrow_path(obj, "ENTER DB NAME THAT YOUD LIKE TO SEE") == -1)
+		{
+			ft_putstr("NO SUCH INFORMATION");
 			return(-1);
+		}
 	}
+	return(1);
+}
+
+int	print_rows(t_obj *obj)
+{
+	int		fd;
+	char	*string;
+	
+	if(check_path_for_rows(obj) == -1)
+		return (-1);
 	fd = open(obj->filename.row, O_RDONLY);
 	ft_putstr("ROWS\n---------------\n");
 	while(get_next_line(fd, &string))
@@ -63,26 +72,22 @@ int	print_rows(t_obj *obj)
 void write_row_to_file(t_obj *obj)
 {
 	FILE *fptr;
-	char *row_name;
-
-  
-   row_name = get_answer("ENTER NAME OF NEW ROW");
-   if (check_duplicates(obj->filename.row, row_name) == 1)
+	char *row_name;	row_name = get_answer("ENTER NAME OF NEW ROW");
+	if (check_duplicates(obj->filename.row, row_name) == 1)
 	{
 		ft_putstr("!!!DUPLICATE DATABASE, PLEASE CHOOSE ANOTHER NAME!!!\n");
 		write_row_to_file(obj);
   		return ;
 	}
-
-   fptr = fopen(obj->filename.row, "a");
-   obj->filename.col_name = row_name;
-   if(fptr == NULL)
-   {
-      printf("Error!");   
-      exit(1);             
-   }
-   fprintf(fptr, "%s\n", row_name);
-   fclose(fptr);
+	fptr = fopen(obj->filename.row, "a");
+	obj->filename.col_name = row_name;
+	if(fptr == NULL)
+	{
+		printf("Error!");   
+		exit(1);             
+	}
+	fprintf(fptr, "%s\n", row_name);
+	fclose(fptr);
 }
 
 int make_col_file(t_obj *obj)
@@ -91,39 +96,23 @@ int make_col_file(t_obj *obj)
 	FILE *fptr;
 	filename = ft_strjoin(obj->filename.curr_dir, "/database/tables/rows/columns/");
 	filename = ft_strjoin(filename,  obj->filename.col_name);
-  	filename = ft_strjoin(filename, ".txt");
+	filename = ft_strjoin(filename, ".txt");
 
-  	printf("FILENAME:%s\n", filename);
+	printf("FILENAME:%s\n", filename);
 	fptr = fopen(filename, "a");
 	if(fptr == NULL)
-   	{
-      printf("Error!");   
-      exit(1);             
-   	}
+	{
+		printf("Error!");   
+		exit(1);             
+	}
 	fclose(fptr);
-  	return (0);
+	return (0);
 }
 
 int add_row_to_table(t_obj *obj)
 {
-	if (obj->filename.tab_path != 1)
-	{
-		if (choose_dbtab_path(obj, "ENTER DB NAME THAT YOUD LIKE TO SEE") == -1)
-		{
-			ft_putstr("NO SUCH INFORMATION");
-			return(-1);
-		}
-	}
-	if (obj->filename.row_path != 1)
-	{
-		printf("%s\n", obj->filename.curr_row);
-		if (choose_dbrow_path(obj, "ENTER DB table THAT YOUD LIKE TO SEE") == -1)
-		{
-			ft_putstr("NO SUCH INFORMATION");
-			return(-1);
-			
-		}
-	}
+	if(check_path_for_rows(obj) == -1)
+		return (-1);
   	printf("%s\n", obj->filename.row);
 	write_row_to_file(obj);
 	make_col_file(obj);
@@ -150,50 +139,31 @@ int delete_col_file(t_obj *obj, char *delete)
 	int ret = 0;
 	FILE *fptr = NULL;
 
-
   	filename = ft_strjoin(obj->filename.curr_dir, "/database/tables/rows/columns/");
   	filename = ft_strjoin(filename, delete);
   	filename = ft_strjoin(filename, ".txt");
-	
-  	printf("%s\n", filename);
+	printf("%s\n", filename);
 
-  	fptr = fopen(filename, "w");
+	fptr = fopen(filename, "w");
 	ret = remove(filename);
-   if(ret == 0) 
-      ft_putstr("File deleted successfully");
-   else 
-      ft_putstr("Error: unable to delete the file");
-   fclose(fptr);
-   return(0);
+	if(ret == 0) 
+		ft_putstr("File deleted successfully");
+	else 
+		ft_putstr("Error: unable to delete the file");
+	fclose(fptr);
+	return(0);
 }
 
 int delete_row(t_obj *obj)
 {
 	char *delete;
+	t_read_line rd;
 	int row_count;
-	char **new;
-	int x;
-	int fd;
 	char *line;
 
-	x = 0;
-	if (obj->filename.tab_path != 1)
-	{
-		if (choose_dbtab_path(obj, "ENTER DB NAME THAT YOUD LIKE TO SEE") == -1)
-		{
-			ft_putstr("NO SUCH INFORMATION");
-			return(-1);
-		}
-	}
-	if (obj->filename.row_path != 1)
-	{
-		printf("%s\n", obj->filename.curr_row);
-		if (choose_dbrow_path(obj, "ENTER DB table THAT YOUD LIKE TO SEE") == -1)
-		{
-			ft_putstr("NO SUCH INFORMATION");
-			return(-1);
-		}
-	}
+	rd.x = 0;
+	if(check_path_for_rows(obj) == -1)
+		return (-1);
 	printf("%s\n", obj->filename.row);
 	print_rows(obj);
 	delete = search_database_list(obj->filename.row, "ENTER ROW TO BE DELETED");
@@ -202,24 +172,20 @@ int delete_row(t_obj *obj)
 		ft_putstr("DOESN'T MATCH\n");
 		return (0);
 	}
-	printf("%s\n", delete);
 	row_count = count_rows(obj);
-	printf("%d\n", row_count);
-
-	
-	fd = open(obj->filename.row, O_RDONLY);
-	new = (char**)malloc(sizeof(char**) * row_count);
-	while (get_next_line(fd, &line) == 1)
+	rd.fd = open(obj->filename.row, O_RDONLY);
+	rd.new_str = (char**)malloc(sizeof(char**) * row_count);
+	while (get_next_line(rd.fd, &line) == 1)
 	{
 		if (ft_strcmp(delete, line) != 0)
 		{
-			new[x] = (char*)malloc(sizeof(char *) * ft_strlen(line) + 1);
-			ft_strcpy(new[x], line);
-			printf("%s\n", new[x]);
-			x++;
+			rd.new_str[rd.x] = (char*)malloc(sizeof(char *) * ft_strlen(line) + 1);
+			ft_strcpy(rd.new_str[rd.x], line);
+			printf("%s\n", rd.new_str[rd.x]);
+			rd.x++;
 		}
 	}
-	overwrite_db(obj->filename.row, new, x);
+	overwrite_db(obj->filename.row, rd.new_str, rd.x);
 	delete_col_file(obj, delete);
 	return (1);
 }
