@@ -1,2 +1,3 @@
-galaxy
+galaxies
 solar system
+physics

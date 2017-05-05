@@ -1,5 +1,51 @@
 #include "ft_db.h"
 
+void datacol_nav(t_obj *obj)
+{
+	int usr_crud_choice;
+	char *crud_choice;
+	obj->filename.in_col_dir = 1;
+
+	int x;
+	x = 1;
+	while (obj->filename.in_col_dir)
+	{	
+		if (print_cols(obj) == -1)
+		{
+			obj->filename.in_col_dir = 0;
+			obj->filename.col_path = 0;
+			obj->filename.row_path = 0;
+			obj->filename.tab_path = 0;
+			obj->filename.in_col_dir = 0;
+			return ;
+		}	
+		printf("Enter 1 to add a col\nEnter 2 to delete a col\nEnter 3 to update a col\nEnter 4 to go back\nEnter 5 to quit");
+		crud_choice = get_answer("\nChoose now");
+		printf("%s\n", crud_choice);
+		usr_crud_choice = atoi(crud_choice);
+		if (usr_crud_choice == 1)
+			add_col_to_row(obj);
+		if (usr_crud_choice == 2)
+			delete_col(obj);
+		if (usr_crud_choice == 3)
+			update_col(obj);
+		if (usr_crud_choice == 4)
+		{
+			obj->filename.col_path = 0;
+			datarow_nav(obj);
+			obj->filename.in_col_dir = 0;
+		}
+		if (usr_crud_choice == 5)
+		{
+			obj->filename.col_path = 0;
+			obj->filename.row_path = 0;
+			obj->filename.tab_path = 0;
+			obj->filename.in_col_dir = 0;
+		}
+	}
+
+}
+
 void datarow_nav(t_obj *obj)
 {
 	int in_row_dir;
@@ -9,7 +55,7 @@ void datarow_nav(t_obj *obj)
 	while (in_row_dir)
 	{	
 		print_rows(obj);
-		printf("Enter 1 to add a row\nEnter 2 to delete a row\nEnter 3 to update a row\nEnter 4 to go back\nEnter 5 to quit");
+		printf("Enter 1 to add a row\nEnter 2 to delete a row\nEnter 3 to update a row\nEnter 4 to go back\nEnter 5 to go to columns\nEnter 6 to exit");
 		crud_choice = get_answer("\nChoose now");
 		usr_crud_choice = atoi(crud_choice);
 		if (usr_crud_choice == 1)
@@ -19,17 +65,25 @@ void datarow_nav(t_obj *obj)
 		if (usr_crud_choice == 3)
 			update_row(obj);
 		if (usr_crud_choice == 4)
-			obj->filename.row_path = 0;
-		if (usr_crud_choice == 5)
 		{
 			obj->filename.row_path = 0;
-			obj->filename.table_path = 0;
+			datatable_nav(obj);
+			in_row_dir = 0;
+		}
+		if (usr_crud_choice == 5)
+		{
+			datacol_nav(obj);
+			in_row_dir = 0;
+		}	
+		if (usr_crud_choice == 6)
+		{
+			obj->filename.row_path = 0;
+			obj->filename.tab_path = 0;
 			in_row_dir = 0;
 		}
 	}
 
 }
-
 
 void datatable_nav(t_obj *obj)
 {
@@ -40,7 +94,7 @@ void datatable_nav(t_obj *obj)
 	while (in_table_dir)
 	{	
 		print_tables(obj);
-		printf("Enter 1 to add a table\nEnter 2 to delete a table\nEnter 3 to update a table\nEnter 4 to go back\nEnter 5 to quit");
+		printf("Enter 1 to add a table\nEnter 2 to delete a table\nEnter 3 to update a table\nEnter 4 to go back\nEnter 5 to go to rows\nEnter 6 to exit");
 		crud_choice = get_answer("\nChoose now");
 		usr_crud_choice = atoi(crud_choice);
 		if (usr_crud_choice == 1)
@@ -50,8 +104,17 @@ void datatable_nav(t_obj *obj)
 		if (usr_crud_choice == 3)
 			update_table(obj);
 		if (usr_crud_choice == 4)
+		{
 			obj->filename.tab_path = 0;
+			database_nav(obj);
+			in_table_dir = 0;
+		}
 		if (usr_crud_choice == 5)
+		{
+			datarow_nav(obj);
+			in_table_dir = 0;
+		}	
+		if (usr_crud_choice == 6)
 		{
 			obj->filename.tab_path = 0;
 			in_table_dir = 0;
@@ -79,7 +142,11 @@ void database_nav(t_obj *obj)
 		if (usr_crud_choice == 3)
 			update_database_name(obj);
 		if (usr_crud_choice == 4)
+		{
+			obj->filename.tab_path = 0;
+			in_db_dir = 0;
 			datatable_nav(obj);
+		}	
 		if (usr_crud_choice == 5)
 			in_db_dir = 0;
 	}
@@ -102,7 +169,7 @@ int main(void)
 
 		print_database(obj->filename.db);
 		usr_dir_choice = 0;
-		dir_choice = get_answer("Enter 1 to go to databases\nEnter 2 to navigate to a table\nEnter 3 to navigate to table rows\nEnter 4 to navigate to row columns\nEnter 5 to quit Program\n");
+		dir_choice = get_answer("Enter 1 to navigate to databases\nEnter 2 to navigate to a table\nEnter 3 to navigate to table rows\nEnter 4 to navigate to row columns\nEnter 5 to quit Program\n");
 
 		usr_dir_choice = atoi(dir_choice);
 		if (usr_dir_choice == 1)
@@ -111,6 +178,8 @@ int main(void)
 			datatable_nav(obj);
 		if (usr_dir_choice == 3)
 			datarow_nav(obj);
+		if (usr_dir_choice == 4)
+			datacol_nav(obj);
 		if (usr_dir_choice == 5)
 		{
 			tru = 0;

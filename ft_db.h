@@ -80,6 +80,7 @@ typedef struct s_file_names
 	char *col_name;
 	char *curr_col;
 	int col_path;
+	int in_col_dir;
 }				t_file_names;
  
 typedef struct s_obj
@@ -123,6 +124,11 @@ int add_col_to_row(t_obj *obj);
 int count_cols(t_obj *obj);
 int delete_col(t_obj *obj);
 int update_col(t_obj *obj);
+void datacol_nav(t_obj *obj);
+void datarow_nav(t_obj *obj);
+void datatable_nav(t_obj *obj);
+void database_nav(t_obj *obj);
+
 
 
 

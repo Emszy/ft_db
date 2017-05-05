@@ -20,7 +20,6 @@ int	print_cols(t_obj *obj)
 {
 	int		fd;
 	char	*string;
-
 	if (obj->filename.tab_path != 1)
 	{
 		if (choose_dbtab_path(obj, "ENTER DB NAME THAT YOUD LIKE TO SEE") == -1)
@@ -28,17 +27,21 @@ int	print_cols(t_obj *obj)
 			ft_putstr("NO SUCH INFORMATION");
 			return(-1);
 		}
-		if (choose_dbrow_path(obj, "ENTER DB NAME THAT YOUD LIKE TO SEE") == -1)
-		{
-		ft_putstr("NO SUCH INFORMATION");
-		return(-1);
-		}
-		if (choose_dbcol_path(obj, "ENTER ROW NAME THAT YOUD LIKE TO SEE TO") == -1)
+	}
+	if (obj->filename.row_path != 1)
+	{
+		if (choose_dbrow_path(obj, "ENTER TABLE THAT YOUD LIKE TO SEE") == -1)
 		{
 			ft_putstr("NO SUCH INFORMATION");
 			return(-1);
 		}
 	}
+		if (choose_dbcol_path(obj, "ENTER ROW NAME THAT YOUD LIKE TO SEE") == -1)
+		{
+			ft_putstr("NO SUCH INFORMATION");
+			return(-1);
+		}
+	
 	print_rows(obj);
 	fd = open(obj->filename.col_name, O_RDONLY);
 	while(get_next_line(fd, &string))
@@ -60,6 +63,12 @@ void write_col_to_file(t_obj *obj)
 
    fptr = fopen(obj->filename.col_name, "a");
    col_name = get_answer("ENTER NAME OF NEW COL");
+   if (check_duplicates(obj->filename.col_name, col_name) == 1)
+	{
+		ft_putstr("!!!DUPLICATE DATABASE, PLEASE CHOOSE ANOTHER NAME!!!\n");
+		write_col_to_file(obj);
+  		return ;
+	}
    obj->filename.col_name = col_name;
    if(fptr == NULL)
    {
@@ -73,21 +82,30 @@ void write_col_to_file(t_obj *obj)
 
 int add_col_to_row(t_obj *obj)
 {
-	if (choose_dbtab_path(obj, "ENTER DB NAME THAT YOUD LIKE TO ADD TO") == -1)
+
+	if (obj->filename.tab_path != 1)
 	{
-		ft_putstr("NO SUCH INFORMATION");
-		return(-1);
+		if (choose_dbtab_path(obj, "ENTER DB NAME THAT YOUD LIKE TO SEE") == -1)
+		{
+			ft_putstr("NO SUCH INFORMATION");
+			return(-1);
+		}
 	}
-		printf("%s\n", obj->filename.curr_table);
-	if (choose_dbrow_path(obj, "ENTER TABLE NAME THAT YOUD LIKE TO ADD TO") == -1)
+	if (obj->filename.row_path != 1)
 	{
-		ft_putstr("NO SUCH INFORMATION");
-		return(-1);
+		if (choose_dbrow_path(obj, "ENTER TABLE NAME THAT YOUD LIKE TO SEE") == -1)
+		{
+			ft_putstr("NO SUCH INFORMATION");
+			return(-1);
+		}
 	}
-	if (choose_dbcol_path(obj, "ENTER ROW NAME THAT YOUD LIKE TO ADD TO") == -1)
+	if (obj->filename.col_path != 1)
 	{
-		ft_putstr("NO SUCH INFORMATION");
-		return(-1);
+		if (choose_dbcol_path(obj, "ENTER ROW NAME THAT YOUD LIKE TO SEE TO") == -1)
+		{
+			ft_putstr("NO SUCH INFORMATION");
+			return(-1);
+		}
 	}
   	printf("%s\n", obj->filename.row);
 	write_col_to_file(obj);
@@ -121,22 +139,29 @@ int delete_col(t_obj *obj)
 	char *line;
 
 	x = 0;
-
-	if (choose_dbtab_path(obj, "ENTER DB THAT YOUD LIKE A COL DELETED") == -1)
+	if (obj->filename.tab_path != 1)
 	{
-		ft_putstr("NO SUCH INFORMATION");
-		return(-1);
+		if (choose_dbtab_path(obj, "ENTER DB NAME THAT YOUD LIKE TO SEE") == -1)
+		{
+			ft_putstr("NO SUCH INFORMATION");
+			return(-1);
+		}
 	}
-		printf("%s\n", obj->filename.curr_table);
-	if (choose_dbrow_path(obj, "ENTER DB TABLE THAT YOUD LIKE A COL DELETED") == -1)
+	if (obj->filename.row_path != 1)
 	{
-		ft_putstr("NO SUCH INFORMATION");
-		return(-1);
+		if (choose_dbrow_path(obj, "ENTER DB NAME THAT YOUD LIKE TO SEE") == -1)
+		{
+			ft_putstr("NO SUCH INFORMATION");
+			return(-1);
+		}
 	}
-	if (choose_dbcol_path(obj, "ENTER ROW NAME THAT YOUD LIKE TO ADD TO") == -1)
+	if (obj->filename.col_path != 1)
 	{
-		ft_putstr("NO SUCH INFORMATION");
-		return(-1);
+		if (choose_dbcol_path(obj, "ENTER ROW NAME THAT YOUD LIKE TO SEE TO") == -1)
+		{
+			ft_putstr("NO SUCH INFORMATION");
+			return(-1);
+		}
 	}
 	printf("%s\n", obj->filename.col_name);
 	print_cols(obj);
@@ -179,31 +204,39 @@ int update_col(t_obj *obj)
 
 	x = 0;
 
-	if (choose_dbtab_path(obj, "ENTER DB THAT YOUD LIKE A COL UPDATED") == -1)
+	if (obj->filename.tab_path != 1)
 	{
-		ft_putstr("NO SUCH INFORMATION");
-		return(-1);
+		if (choose_dbtab_path(obj, "ENTER DB NAME THAT YOUD LIKE TO SEE") == -1)
+		{
+			ft_putstr("NO SUCH INFORMATION");
+			return(-1);
+		}
 	}
-		printf("%s\n", obj->filename.curr_table);
-	if (choose_dbrow_path(obj, "ENTER DB TABLE THAT YOUD LIKE A COL UPDATED") == -1)
+	if (obj->filename.row_path != 1)
 	{
-		ft_putstr("NO SUCH INFORMATION");
-		return(-1);
+		if (choose_dbrow_path(obj, "ENTER DB NAME THAT YOUD LIKE TO SEE") == -1)
+		{
+			ft_putstr("NO SUCH INFORMATION");
+			return(-1);
+		}
 	}
-	if (choose_dbcol_path(obj, "ENTER ROW NAME THAT YOUD LIKE A COL UPDATED") == -1)
+	if (obj->filename.col_path != 1)
 	{
-		ft_putstr("NO SUCH INFORMATION");
-		return(-1);
+		if (choose_dbcol_path(obj, "ENTER ROW NAME THAT YOUD LIKE TO SEE TO") == -1)
+		{
+			ft_putstr("NO SUCH INFORMATION");
+			return(-1);
+		}
 	}
 	printf("%s\n", obj->filename.col_name);
 	print_cols(obj);
 	delete = search_database_list(obj->filename.col_name, "ENTER COL TO BE UPDATED");
-	update_name = get_answer("WHAT DO YOU WANT TO CHANGE THE COL NAME TO?");
 	if (ft_strcmp(delete, "NO MATCH") == 0)
 	{
 		ft_putstr("DOESN'T MATCH");
 		return (0);
 	}
+	update_name = get_answer("WHAT DO YOU WANT TO CHANGE THE COL NAME TO?");
 	printf("%s\n", delete);
 	col_count = count_cols(obj);
 	printf("%d\n", col_count);

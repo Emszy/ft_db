@@ -3,16 +3,28 @@
 int choose_dbrow_path(t_obj *obj, char *message)
 {
 	char *table;
-
 	table = search_database_list(obj->filename.table, message);
 	if (ft_strcmp(table, "NO MATCH") == 0)
+	{
+		ft_putstr(ANSI_COLOR_RED);
+		ft_putstr("NO MATCHING TABLE");
+		ft_putstr(ANSI_COLOR_RESET);
 		return(-1);
+	}
   	obj->filename.row = ft_strjoin(obj->filename.curr_dir, "/database/");
   	obj->filename.row = ft_strjoin(obj->filename.row, "tables/rows/");
   	obj->filename.row = ft_strjoin(obj->filename.row,  table);
   	obj->filename.row = ft_strjoin(obj->filename.row, ".txt");
   	obj->filename.curr_row = table;
   	obj->filename.row_path = 1;
+  	if (count_rows(obj) == 0 && obj->filename.in_col_dir == 1)
+	{
+		ft_putstr(ANSI_COLOR_RED);
+		ft_putstr("NO ROWS TO ADD TO\n");
+		ft_putstr(ANSI_COLOR_RESET);
+		return (-1);
+	}
+
 
   	return (0);
 }
@@ -21,12 +33,11 @@ int	print_rows(t_obj *obj)
 {
 	int		fd;
 	char	*string;
-
 	if (obj->filename.tab_path != 1)
 	{
 		if (choose_dbtab_path(obj, "ENTER DB NAME THAT YOUD LIKE TO SEE") == -1)
 		{
-			ft_putstr("NO SUCH INFORMATION");
+			ft_putstr("NO SUCH INFORMATION\n");
 			return(-1);
 		}
 	}
@@ -34,10 +45,7 @@ int	print_rows(t_obj *obj)
 	{
 		printf("%s\n", obj->filename.curr_row);
 		if (choose_dbrow_path(obj, "ENTER DB table THAT YOUD LIKE TO SEE") == -1)
-		{
-			ft_putstr("NO SUCH INFORMATION");
 			return(-1);
-		}
 	}
 	fd = open(obj->filename.row, O_RDONLY);
 	ft_putstr("---------------\n");
@@ -57,8 +65,16 @@ void write_row_to_file(t_obj *obj)
 	FILE *fptr;
 	char *row_name;
 
-   fptr = fopen(obj->filename.row, "a");
+  
    row_name = get_answer("ENTER NAME OF NEW ROW");
+   if (check_duplicates(obj->filename.row, row_name) == 1)
+	{
+		ft_putstr("!!!DUPLICATE DATABASE, PLEASE CHOOSE ANOTHER NAME!!!\n");
+		write_table_to_file(obj);
+  		return ;
+	}
+
+   fptr = fopen(obj->filename.row, "a");
    obj->filename.col_name = row_name;
    if(fptr == NULL)
    {
@@ -90,16 +106,23 @@ int make_col_file(t_obj *obj)
 
 int add_row_to_table(t_obj *obj)
 {
-	if (choose_dbtab_path(obj, "ENTER DB NAME THAT YOUD LIKE TO ADD TO") == -1)
+	if (obj->filename.tab_path != 1)
 	{
-		ft_putstr("NO SUCH INFORMATION");
-		return(-1);
+		if (choose_dbtab_path(obj, "ENTER DB NAME THAT YOUD LIKE TO SEE") == -1)
+		{
+			ft_putstr("NO SUCH INFORMATION");
+			return(-1);
+		}
 	}
-		printf("%s\n", obj->filename.curr_table);
-	if (choose_dbrow_path(obj, "ENTER TABLE NAME THAT YOUD LIKE TO ADD TO") == -1)
+	if (obj->filename.row_path != 1)
 	{
-		ft_putstr("NO SUCH INFORMATION");
-		return(-1);
+		printf("%s\n", obj->filename.curr_row);
+		if (choose_dbrow_path(obj, "ENTER DB table THAT YOUD LIKE TO SEE") == -1)
+		{
+			ft_putstr("NO SUCH INFORMATION");
+			return(-1);
+			
+		}
 	}
   	printf("%s\n", obj->filename.row);
 	write_row_to_file(obj);
@@ -154,24 +177,29 @@ int delete_row(t_obj *obj)
 	char *line;
 
 	x = 0;
-
-	if (choose_dbtab_path(obj, "ENTER DB THAT YOUD LIKE A ROW DELETED") == -1)
+	if (obj->filename.tab_path != 1)
 	{
-		ft_putstr("NO SUCH INFORMATION");
-		return(-1);
+		if (choose_dbtab_path(obj, "ENTER DB NAME THAT YOUD LIKE TO SEE") == -1)
+		{
+			ft_putstr("NO SUCH INFORMATION");
+			return(-1);
+		}
 	}
-		printf("%s\n", obj->filename.curr_table);
-	if (choose_dbrow_path(obj, "ENTER DB TABLE THAT YOUD LIKE A ROW DELETED") == -1)
+	if (obj->filename.row_path != 1)
 	{
-		ft_putstr("NO SUCH INFORMATION");
-		return(-1);
+		printf("%s\n", obj->filename.curr_row);
+		if (choose_dbrow_path(obj, "ENTER DB table THAT YOUD LIKE TO SEE") == -1)
+		{
+			ft_putstr("NO SUCH INFORMATION");
+			return(-1);
+		}
 	}
 	printf("%s\n", obj->filename.row);
 	print_rows(obj);
 	delete = search_database_list(obj->filename.row, "ENTER ROW TO BE DELETED");
 	if (ft_strcmp(delete, "NO MATCH") == 0)
 	{
-		ft_putstr("DOESN'T MATCH");
+		ft_putstr("DOESN'T MATCH\n");
 		return (0);
 	}
 	printf("%s\n", delete);
@@ -231,26 +259,33 @@ int update_row(t_obj *obj)
 
 	x = 0;
 
-	if (choose_dbtab_path(obj, "ENTER DB THAT YOUD LIKE A ROW UPDATED") == -1)
+	if (obj->filename.tab_path != 1)
 	{
-		ft_putstr("NO SUCH INFORMATION");
-		return(-1);
+		if (choose_dbtab_path(obj, "ENTER DB NAME THAT YOUD LIKE TO SEE") == -1)
+		{
+			ft_putstr("NO SUCH INFORMATION");
+			return(-1);
+		}
 	}
-		printf("%s\n", obj->filename.curr_table);
-	if (choose_dbrow_path(obj, "ENTER DB TABLE THAT YOUD LIKE A ROW UPDATED") == -1)
+	if (obj->filename.row_path != 1)
 	{
-		ft_putstr("NO SUCH INFORMATION");
-		return(-1);
+		printf("%s\n", obj->filename.curr_row);
+		if (choose_dbrow_path(obj, "ENTER DB table THAT YOUD LIKE TO SEE") == -1)
+		{
+			ft_putstr("NO SUCH INFORMATION");
+			return(-1);
+		}
 	}
 	printf("%s\n", obj->filename.row);
 	print_rows(obj);
 	delete = search_database_list(obj->filename.row, "ENTER ROW TO BE UPDATED");
-	update_name = get_answer("WHAT DO YOU WANT TO CHANGE THE ROW NAME TO?");
+	
 	if (ft_strcmp(delete, "NO MATCH") == 0)
 	{
-		ft_putstr("DOESN'T MATCH");
+		ft_putstr("DOESN'T MATCH\n");
 		return (0);
 	}
+	update_name = get_answer("WHAT DO YOU WANT TO CHANGE THE ROW NAME TO?");
 	printf("%s\n", delete);
 	row_count = count_rows(obj);
 	printf("%d\n", row_count);

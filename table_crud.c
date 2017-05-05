@@ -85,7 +85,7 @@ int add_table_to_db(t_obj *obj)
 {
 	if (obj->filename.tab_path != 1)
 	{
-		if (choose_dbtab_path(obj, "ENTER DB NAME THAT YOUD LIKE TO ADD TO") == -1)
+		if (choose_dbtab_path(obj, "ENTER TABLE NAME THAT YOUD LIKE TO ADD") == -1)
 		{
 			ft_putstr("NO SUCH INFORMATION");
 			return(-1);
