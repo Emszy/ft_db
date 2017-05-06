@@ -1,4 +1,5 @@
 #include "ft_db.h"
+/* 17 functionsin file */
 
 int		choose_dbcol_path(t_obj *obj, char *message)
 {
