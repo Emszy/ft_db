@@ -1,5 +1,5 @@
 #include "ft_db.h"
-/* 17 functionsin file */
+/*  functionsin file */
 
 int		choose_dbcol_path(t_obj *obj, char *message)
 {
@@ -209,25 +209,25 @@ int			print_cols(t_obj *obj)
 	if (check_path_for_col(obj) == -1)
 		return (-1);
 	table = save_rows(obj);
-	t.col = (char**)malloc(sizeof(char**) * \
+	table.columns = (char**)malloc(sizeof(char**) * \
 		(get_total_columns(obj) + table.total_rows + 20));
 	while (++row < table.total_rows)
 	{
 		table.total_cols = 0;
 		table.col_path = iterate_dbcol_path(obj, table.rows[row]);
-		t = save_column_file(table);
-		t.col[t.x] = (char*)malloc(sizeof(char*) * ft_strlen(COL_DELIM) + 1);
-		t.col[t.x] = ft_strcpy(t.col[t.x], COL_DELIM);
+		table = save_column_file(table);
+		table.columns[table.x] = (char*)malloc(sizeof(char*) * ft_strlen(COL_DELIM) + 1);
+		table.columns[table.x] = ft_strcpy(table.columns[table.x], COL_DELIM);
 		table.x++;
 	}
-	t.col[table.x] = (char*)malloc(sizeof(char*) * \
+	table.columns[table.x] = (char*)malloc(sizeof(char*) * \
 		ft_strlen(END_DELIM) + 1);
-	t.col[table.x] = ft_strcpy(t.col[table.x], END_DELIM);
+	table.columns[table.x] = ft_strcpy(table.columns[table.x], END_DELIM);
 	print_table_row(table);
 	printf("\n\n\n");
-	print_in_order(t.col, table.total_cols);
+	print_in_order(table.columns, table.total_cols);
 	free(table.rows);
-	free(t.col);
+	free(table.columns);
 	return (0);
 }
 
