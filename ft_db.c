@@ -1,20 +1,14 @@
 #include "ft_db.h"
 
 /* Norme: ./ft_db.c
+Error: 11 functions in the file
 Error: 42 header not at top of the file
-Error (line 3): declarations in datacol_nav are bad aligned
-Error (line 3): Space before function name
-Error (line 3): function datacol_nav has 42 lines
-Error (line 3): declarations in datacol_nav must be at the top of the function
-Error (line 3, col 4): bad spacing
-Error (line 49): function datarow_nav has 27 lines
-Error (line 133): function main has 50 lines
-Error (line 136, col 6): tru is instanciated during declaration
-Error (line 163): comment not well formatted
-Error (line 163): comment not well placed
+Error (line 219): comment not well formatted
+Error (line 241): multiple empty lines
+Error (line 242): comment not well formatted
 */
 
-void reset_flags(t_obj *obj)
+void	reset_flags(t_obj *obj)
 {
 	obj->filename.in_col_dir = 0;
 	obj->filename.col_path = 0;
@@ -23,7 +17,7 @@ void reset_flags(t_obj *obj)
 	obj->filename.in_col_dir = 0;
 }
 
-void print_col_choice()
+void	print_col_choice(void)
 {
 	printf(
 		"\t\t\tEnter 1 to add a col\n \
@@ -32,7 +26,7 @@ void print_col_choice()
 		Enter 4 to go home");
 }
 
-void take_choices(int usr_crud_choice, t_obj *obj)
+void	take_choices(int usr_crud_choice, t_obj *obj)
 {
 	if (usr_crud_choice == 1)
 		add_col_to_row(obj);
@@ -52,7 +46,7 @@ void	datacol_nav(t_obj *obj)
 {
 	int		usr_crud_choice;
 	char	*crud_choice;
-	int x;
+	int		x;
 
 	obj->filename.in_col_dir = 1;
 	x = 1;
@@ -72,10 +66,10 @@ void	datacol_nav(t_obj *obj)
 	}
 }
 
-void display_row_choices(t_obj *obj)
+void	display_row_choices(t_obj *obj)
 {
-		print_rows(obj);
-		printf(
+	print_rows(obj);
+	printf(
 		"Enter 1 to add a row\n \
 		Enter 2 to delete a row\n \
 		Enter 3 to update a row\n \
@@ -111,7 +105,7 @@ void	datarow_nav(t_obj *obj)
 	}
 }
 
-void display_table_choices(t_obj *obj)
+void	display_table_choices(t_obj *obj)
 {
 	print_tables(obj);
 	printf(
@@ -175,7 +169,7 @@ void	database_nav(t_obj *obj)
 	}
 }
 
-int display_init_choices(t_obj *obj, int usr_choice, int tru)
+int		display_init_choices(t_obj *obj, int usr_choice, int tru)
 {
 	if (usr_choice == 1)
 		database_nav(obj);
@@ -187,7 +181,7 @@ int display_init_choices(t_obj *obj, int usr_choice, int tru)
 		datacol_nav(obj);
 	if (usr_choice == 5)
 		tru = 0;
-	return(tru);
+	return (tru);
 }
 
 int		main(void)

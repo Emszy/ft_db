@@ -1,8 +1,8 @@
 #include "ft_db.h"
 
-char *get_answer(char *message)
+char	*get_answer(char *message)
 {
-	int 	ret;
+	int		ret;
 	char	*answer;
 	char	buf[BUF_SIZE + 1];
 
@@ -14,11 +14,12 @@ char *get_answer(char *message)
 	return (answer);
 }
 
-void init_db_file(t_obj *obj)
+void	init_db_file(t_obj *obj)
 {
 	char cwd[1024];
+
 	getcwd(cwd, sizeof(cwd));
 	obj->filename.curr_dir = malloc(sizeof(char*) * ft_strlen(cwd) + 1);
 	ft_strcpy(obj->filename.curr_dir, cwd);
-  	obj->filename.db = ft_strjoin(cwd, "/database/databases.txt");
+	obj->filename.db = ft_strjoin(cwd, "/database/databases.txt");
 }

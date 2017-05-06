@@ -1,5 +1,14 @@
 #include "ft_db.h"
-/*  functionsin file */
+/*  Norme: ./col_crud.c
+Error: global scope bad aligned
+Error: 17 functions in the file
+Error: 42 header not at top of the file
+Error (line 1): preprocessor block must be followed by one empty line
+Error (line 185): bad spacing after save_column_file
+Error (line 202): comment not well formatted
+Error (line 203): function print_cols has 27 lines
+Error (line 203): bad spacing before print_cols
+Error (line 219): line has 90 characters*/
 
 int		choose_dbcol_path(t_obj *obj, char *message)
 {

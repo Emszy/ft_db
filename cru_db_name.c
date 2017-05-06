@@ -1,7 +1,10 @@
 #include "ft_db.h"
 
-/* 8 functionsin file
-line 138 has 92 characters
+/*Norme: ./cru_db_name.c
+Error: global scope bad aligned
+Error: 8 functions in the file
+Error: 42 header not at top of the file
+Error (line 140): line has 92 characters
 */
 
 int		print_database(char *database_directory)
