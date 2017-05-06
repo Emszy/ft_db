@@ -291,8 +291,8 @@ int			count_cols(char *filename)
 	return (x);
 }
 
-t_read_line		update_loop(t_obj *obj, char *delete, char *update_name, \
-	t_read_line rd)
+t_rd		update_loop(t_obj *obj, char *delete, char *update_name, \
+	t_rd rd)
 {
 	int		col_count;
 
@@ -323,7 +323,7 @@ int			delete_col(t_obj *obj)
 {
 	char		*delete;
 	char		*update_name;
-	t_read_line	rd;
+	t_rd	rd;
 
 	rd.x = 0;
 	if (check_path_for_col(obj) == -1)
@@ -345,7 +345,7 @@ int			update_col(t_obj *obj)
 {
 	char		*delete;
 	char		*update_name;
-	t_read_line	rd;
+	t_rd	rd;
 
 	rd.x = 0;
 	if (check_path_for_col(obj) == -1)

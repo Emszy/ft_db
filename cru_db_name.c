@@ -140,7 +140,7 @@ int		update_table_file_name(t_obj *obj, char *delete, char *update)
 	return (0);
 }
 
-t_read_line		update_db_loop(t_obj *obj, char *delete, char *update_name, t_read_line rd)
+t_rd		update_db_loop(t_obj *obj, char *delete, char *update_name, t_rd rd)
 {
 	int		db_count;
 
@@ -171,7 +171,7 @@ t_read_line		update_db_loop(t_obj *obj, char *delete, char *update_name, t_read_
 int		update_database_name(t_obj *obj)
 {
 	char		*delete;
-	t_read_line	rd;
+	t_rd	rd;
 	char		*update_name;
 
 	rd.x = 0;

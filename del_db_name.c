@@ -63,7 +63,7 @@ int			count_databases(t_obj *obj)
 int			delete_database(t_obj *obj)
 {
 	char		*delete;
-	t_read_line	rd;
+	t_rd	rd;
 
 	rd.x = 0;
 	delete = search_database_list(obj->filename.db, "ENTER db NAME to DELETE");

@@ -164,7 +164,7 @@ int		delete_col_file(t_obj *obj, char *delete)
 	return (0);
 }
 
-t_read_line		copy_del_loop(t_read_line rd, char *delete)
+t_rd		copy_del_loop(t_rd rd, char *delete)
 {
 	char	*line;
 
@@ -185,7 +185,7 @@ t_read_line		copy_del_loop(t_read_line rd, char *delete)
 int		delete_row(t_obj *obj)
 {
 	char		*delete;
-	t_read_line	rd;
+	t_rd	rd;
 	int			row_count;
 
 	rd.x = 0;
@@ -231,7 +231,7 @@ int		update_col_file_name(t_obj *obj, char *delete, char *update)
 	return (0);
 }
 
-t_read_line		update_row_loop(t_obj *obj, char *delete, char *update_name, t_read_line rd)
+t_rd		update_row_loop(t_obj *obj, char *delete, char *update_name, t_rd rd)
 {
 	int		row_count;
 
@@ -265,7 +265,7 @@ int		update_row(t_obj *obj)
 {
 	char		*delete;
 	char		*update_name;
-	t_read_line rd;
+	t_rd rd;
 
 	rd.x = 0;
 	if (check_path_for_rows(obj) == -1)

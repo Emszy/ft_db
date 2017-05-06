@@ -103,7 +103,7 @@ typedef struct s_rd_line
 	char **new_str;
 	int x;
 
-}				t_read_line;
+}				t_rd;
 
 
 
