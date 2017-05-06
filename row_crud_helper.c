@@ -11,6 +11,13 @@
 /* ************************************************************************** */
 
 #include "ft_db.h"
+/*Norme: ./row_crud_helper.c
+Error (line 15): bad spacing after choose_dbrow_path
+Error (line 42): bad spacing before check_path_for_rows
+Error (line 42): bad spacing after check_path_for_rows
+Error (line 62): bad spacing before print_rows
+Error (line 62): bad spacing after print_rows
+Error (line 80): bad spacing before count_rows*/
 
 int		choose_dbrow_path(t_obj *obj, char *message)
 {

@@ -12,6 +12,13 @@
 
 #include "ft_db.h"
 
+/*Norme: ./row_crud_update.c
+Error: global scope bad aligned
+Error (line 38): function update_row_loop has 26 lines
+Error (line 38): line has 82 characters
+Error (line 68): declarations in update_row are bad aligned
+*/
+
 int		update_col_file_name(t_obj *obj, char *delete, char *update)
 {
 	char	*filename;
