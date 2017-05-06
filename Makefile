@@ -9,7 +9,9 @@ SRC =	\
 		del_db_name.c \
 		table_crud.c \
 		row_crud.c \
-		col_crud.c
+		col_crud.c \
+		cru_db2.c \
+		ft_db2.c
 
 INPUT_OBJ =	\
 		ft_db.o	\
@@ -18,7 +20,9 @@ INPUT_OBJ =	\
 		del_db_name. o \
 		table_crud.o \
 		row_crud.o \
-		col_crud.o
+		col_crud.o \
+		cru_db2.o \
+		ft_db2.o
 	
 OBJ = $(patsubst %.c,%.o,$(addprefix ./, $(SRC)))
 

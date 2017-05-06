@@ -1,5 +1,14 @@
 #include "ft_db.h"
 
+void	print_col_choice(void)
+{
+	printf(
+		"\t\t\tEnter 1 to add a col\n \
+		Enter 2 to delete a col\n \
+		Enter 3 to update a col\n \
+		Enter 4 to go home");
+}
+
 int		print_database(char *database_directory)
 {
 	int		fd;

@@ -7,72 +7,6 @@ Error: 42 header not at top of the file
 Error (line 171): declarations in update_database_name are bad aligned
 */
 
-int		print_database(char *database_directory)
-{
-	int		fd;
-	char	*str;
-
-	fd = open(database_directory, O_RDONLY);
-	ft_putstr(ANSI_COLOR_BLUE);
-	ft_putstr("DATABASES\n---------------\n");
-	while (get_next_line(fd, &str))
-	{
-		ft_putstr(str);
-		ft_putstr("\n");
-	}
-	ft_putstr("---------------");
-	ft_putstr(ANSI_COLOR_RESET);
-	ft_putstr("\n");
-	return (0);
-}
-
-char	*search_database_list(char *filename, char *message)
-{
-	int		fd;
-	int		match;
-	char	*line;
-	char	*db_name;
-	char	*ret;
-
-	match = 0;
-	fd = open(filename, O_RDONLY);
-	print_database(filename);
-	db_name = get_answer(message);
-	while (get_next_line(fd, &line) == 1)
-	{
-		if (strcmp(line, db_name) == 0)
-		{
-			ret = (char*)malloc(sizeof(char*) * ft_strlen(line) + 1);
-			ft_strcpy(ret, line);
-			match = 1;
-		}
-	}
-	if (match == 0)
-	{
-		ret = (char*)malloc(sizeof(char*) * 8);
-		ret = "NO MATCH";
-	}
-	return (ret);
-}
-
-int		check_duplicates(char *filepath, char *db_name)
-{
-	int		fd;
-	int		match;
-	char	*line;
-
-	match = 0;
-	fd = open(filepath, O_RDONLY);
-	while (get_next_line(fd, &line) == 1)
-	{
-		if (strcmp(line, db_name) == 0)
-			match = 1;
-	}
-	if (match == 1)
-		return (1);
-	return (0);
-}
-
 int		make_table_file(t_obj *obj, char *db_name)
 {
 	char	*filename;
@@ -171,7 +105,7 @@ t_rd		update_db_loop(t_obj *obj, char *delete, char *update_name, t_rd rd)
 int		update_database_name(t_obj *obj)
 {
 	char		*delete;
-	t_rd	rd;
+	t_rd		rd;
 	char		*update_name;
 
 	rd.x = 0;
