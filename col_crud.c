@@ -8,7 +8,7 @@ int		choose_dbcol_path(t_obj *obj, char *message)
 	if (ft_strcmp(row, "NO MATCH") == 0)
 		return (-1);
 	obj->filename.col_name = ft_strjoin(obj->filename.curr_dir, \
-	 "/database/tables/rows/columns/");
+	"/database/tables/rows/columns/");
 	obj->filename.col_name = ft_strjoin(obj->filename.col_name, row);
 	obj->filename.col_name = ft_strjoin(obj->filename.col_name, ".txt");
 	obj->filename.curr_col = row;
@@ -198,7 +198,7 @@ t_table		save_column_file(t_table table)
 	close(fd);
 	return (table);
 }
-
+/* 28 lines*/
 int			print_cols(t_obj *obj)
 {
 	t_table		table;
@@ -208,60 +208,57 @@ int			print_cols(t_obj *obj)
 	if (check_path_for_col(obj) == -1)
 		return (-1);
 	table = save_rows(obj);
-	table.columns = (char**)malloc(sizeof(char**) * \
+	t.col = (char**)malloc(sizeof(char**) * \
 		(get_total_columns(obj) + table.total_rows + 20));
 	while (++row < table.total_rows)
 	{
 		table.total_cols = 0;
 		table.col_path = iterate_dbcol_path(obj, table.rows[row]);
-		table = save_column_file(table);
-		table.columns[table.x] = (char*)malloc(sizeof(char*) * \
-			ft_strlen(COL_DELIM) + 1);
-		table.columns[table.x] = ft_strcpy(table.columns[table.x], COL_DELIM);
+		t = save_column_file(table);
+		t.col[t.x] = (char*)malloc(sizeof(char*) * ft_strlen(COL_DELIM) + 1);
+		t.col[t.x] = ft_strcpy(t.col[t.x], COL_DELIM);
 		table.x++;
 	}
-	table.columns[table.x] = (char*)malloc(sizeof(char*) * \
+	t.col[table.x] = (char*)malloc(sizeof(char*) * \
 		ft_strlen(END_DELIM) + 1);
-	table.columns[table.x] = ft_strcpy(table.columns[table.x], END_DELIM);
+	t.col[table.x] = ft_strcpy(t.col[table.x], END_DELIM);
 	print_table_row(table);
 	printf("\n\n\n");
-	print_in_order(table.columns, table.total_cols);
+	print_in_order(t.col, table.total_cols);
 	free(table.rows);
-	free(table.columns);
-	return(0);
+	free(t.col);
+	return (0);
 }
 
 void		write_col_to_file(t_obj *obj, t_table table)
 {
-	FILE 	*fptr;
-	char 	*col_name;
+	FILE	*fptr;
+	char	*col_name;
 
-   fptr = fopen(table.col_path, "a");
-   col_name = get_answer("ENTER NAME OF NEW COL");
-   obj->filename.col_name = col_name;
-   if(fptr == NULL)
-   {
-      printf("Error!");   
-      exit(1);             
-   }
-   fprintf(fptr, "%s\n", col_name);
-   fclose(fptr);
+	fptr = fopen(table.col_path, "a");
+	col_name = get_answer("ENTER NAME OF NEW COL");
+	obj->filename.col_name = col_name;
+	if (fptr == NULL)
+	{
+		printf("Error!");
+		exit(1);
+	}
+	fprintf(fptr, "%s\n", col_name);
+	fclose(fptr);
 }
 
-
-int add_col_to_row(t_obj *obj)
+int			add_col_to_row(t_obj *obj)
 {
-
 	t_table		table;
-	int 		row;
-	int 		col;
+	int			row;
+	int			col;
 
 	row = 0;
 	col = 0;
 	if (check_path_for_col(obj) == -1)
-		return(-1);
+		return (-1);
 	table = save_rows(obj);
-	while(row < table.total_rows)
+	while (row < table.total_rows)
 	{
 		table.col_path = iterate_dbcol_path(obj, table.rows[row]);
 		write_col_to_file(obj, table);
@@ -270,13 +267,11 @@ int add_col_to_row(t_obj *obj)
 	return (0);
 }
 
-
-
-int 		count_cols(char *filename)
+int			count_cols(char *filename)
 {
-	int fd;
-	int x;
-	char *line;
+	int		fd;
+	int		x;
+	char	*line;
 
 	x = 0;
 	fd = open(filename, O_RDONLY);
@@ -286,11 +281,10 @@ int 		count_cols(char *filename)
 	return (x);
 }
 
-
-
-t_read_line update_loop(t_obj *obj, char *delete, char *update_name, t_read_line rd)
+t_read_line		update_loop(t_obj *obj, char *delete, char *update_name, \
+	t_read_line rd)
 {
-	int col_count;
+	int		col_count;
 
 	col_count = count_cols(obj->filename.col_name);
 	rd.fd = open(obj->filename.col_name, O_RDONLY);
@@ -299,13 +293,15 @@ t_read_line update_loop(t_obj *obj, char *delete, char *update_name, t_read_line
 	{
 		if (ft_strcmp(delete, rd.line) == 0)
 		{
-			rd.new_str[rd.x] = (char*)malloc(sizeof(char *) * ft_strlen(update_name) + 1);
+			rd.new_str[rd.x] = (char*)malloc(sizeof(char *) * \
+				ft_strlen(update_name) + 1);
 			ft_strcpy(rd.new_str[rd.x], update_name);
 			rd.x++;
 		}
 		else
 		{
-			rd.new_str[rd.x] = (char*)malloc(sizeof(char *) * ft_strlen(rd.line) + 1);
+			rd.new_str[rd.x] = (char*)malloc(sizeof(char *) * \
+				ft_strlen(rd.line) + 1);
 			ft_strcpy(rd.new_str[rd.x], rd.line);
 			rd.x++;
 		}
@@ -313,16 +309,17 @@ t_read_line update_loop(t_obj *obj, char *delete, char *update_name, t_read_line
 	return (rd);
 }
 
-int 		delete_col(t_obj *obj)
+int			delete_col(t_obj *obj)
 {
-	char *delete;
-	char *update_name;
-	t_read_line rd;
-	
+	char		*delete;
+	char		*update_name;
+	t_read_line	rd;
+
 	rd.x = 0;
 	if (check_path_for_col(obj) == -1)
-		return(-1);
-	delete = search_database_list(obj->filename.col_name, "ENTER COL TO BE UPDATED");
+		return (-1);
+	delete = search_database_list(obj->filename.col_name,\
+	"ENTER COL TO BE UPDATED");
 	if (ft_strcmp(delete, "NO MATCH") == 0)
 	{
 		ft_putstr("DOESN'T MATCH");
@@ -334,18 +331,17 @@ int 		delete_col(t_obj *obj)
 	return (1);
 }
 
-
-
-int 		update_col(t_obj *obj)
+int			update_col(t_obj *obj)
 {
-	char *delete;
-	char *update_name;
-	t_read_line rd;
-	
+	char		*delete;
+	char		*update_name;
+	t_read_line	rd;
+
 	rd.x = 0;
 	if (check_path_for_col(obj) == -1)
-		return(-1);
-	delete = search_database_list(obj->filename.col_name, "ENTER COL TO BE UPDATED");
+		return (-1);
+	delete = search_database_list(obj->filename.col_name,\
+	"ENTER COL TO BE UPDATED");
 	if (ft_strcmp(delete, "NO MATCH") == 0)
 	{
 		ft_putstr("DOESN'T MATCH");
