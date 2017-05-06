@@ -18,6 +18,8 @@ SRC =	\
 		col_crud_helper.c \
 		col_crud_save.c \
 		col_crud_print.c \
+		table_crud_add.c \
+		table_crud_update.c
 		
 
 INPUT_OBJ =	\
@@ -36,6 +38,8 @@ INPUT_OBJ =	\
 		col_crud_helper.o \
 		col_crud_save.o \
 		col_crud_print.o \
+		table_crud_add.o \
+		table_crud_update.o
 		
 	
 OBJ = $(patsubst %.c,%.o,$(addprefix ./, $(SRC)))

@@ -12,11 +12,6 @@
 
 #include "ft_db.h"
 
-/*Norme: ./ft_db.c
-Error: 11 functions in the file
-Error: 42 header not at top of the file
-*/
-
 void	display_table_choices(t_obj *obj)
 {
 	print_tables(obj);

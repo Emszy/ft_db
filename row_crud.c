@@ -12,15 +12,6 @@
 
 #include "ft_db.h"
 
-/*Norme: ./row_crud.c
-Error: global scope bad aligned
-Error: 13 functions in the file
-Error: 42 header not at top of the file
-Error (line 185): declarations in delete_row are bad aligned
-Error (line 234): function update_row_loop has 26 lines
-Error (line 234): line has 82 characters
-Error (line 264): declarations in update_row are bad aligned*/
-
 void	write_row_to_file(t_obj *obj)
 {
 	FILE	*fptr;
