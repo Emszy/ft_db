@@ -12,7 +12,7 @@
 
 #include "ft_db.h"
 
-int		choose_dbcol_path(t_obj *obj, char *message)
+int			choose_dbcol_path(t_obj *obj, char *message)
 {
 	char *row;
 
@@ -28,7 +28,7 @@ int		choose_dbcol_path(t_obj *obj, char *message)
 	return (0);
 }
 
-int		check_path_for_col(t_obj *obj)
+int			check_path_for_col(t_obj *obj)
 {
 	if (obj->filename.tab_path != 1)
 	{
@@ -57,7 +57,7 @@ int		check_path_for_col(t_obj *obj)
 	return (1);
 }
 
-t_table		check_save_path(t_obj *obj, t_table table)
+t_table			check_save_path(t_obj *obj, t_table table)
 {
 	if (obj->filename.tab_path != 1)
 	{
