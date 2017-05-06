@@ -142,8 +142,6 @@ int delete_col_file(t_obj *obj, char *delete)
   	filename = ft_strjoin(obj->filename.curr_dir, "/database/tables/rows/columns/");
   	filename = ft_strjoin(filename, delete);
   	filename = ft_strjoin(filename, ".txt");
-	printf("%s\n", filename);
-
 	fptr = fopen(filename, "w");
 	ret = remove(filename);
 	if(ret == 0) 
@@ -154,13 +152,29 @@ int delete_col_file(t_obj *obj, char *delete)
 	return(0);
 }
 
+t_read_line copy_del_loop(t_read_line rd, char *delete)
+{
+	char *line;
+
+	while (get_next_line(rd.fd, &line) == 1)
+	{
+		if (ft_strcmp(delete, line) != 0)
+		{
+			rd.new_str[rd.x] = (char*)malloc(sizeof(char *) * ft_strlen(line) + 1);
+			ft_strcpy(rd.new_str[rd.x], line);
+			printf("%s\n", rd.new_str[rd.x]);
+			rd.x++;
+		}
+	}
+	return (rd);
+}
+
 int delete_row(t_obj *obj)
 {
 	char *delete;
 	t_read_line rd;
 	int row_count;
-	char *line;
-
+	
 	rd.x = 0;
 	if(check_path_for_rows(obj) == -1)
 		return (-1);
@@ -175,16 +189,7 @@ int delete_row(t_obj *obj)
 	row_count = count_rows(obj);
 	rd.fd = open(obj->filename.row, O_RDONLY);
 	rd.new_str = (char**)malloc(sizeof(char**) * row_count);
-	while (get_next_line(rd.fd, &line) == 1)
-	{
-		if (ft_strcmp(delete, line) != 0)
-		{
-			rd.new_str[rd.x] = (char*)malloc(sizeof(char *) * ft_strlen(line) + 1);
-			ft_strcpy(rd.new_str[rd.x], line);
-			printf("%s\n", rd.new_str[rd.x]);
-			rd.x++;
-		}
-	}
+	rd = copy_del_loop(rd, delete);
 	overwrite_db(obj->filename.row, rd.new_str, rd.x);
 	delete_col_file(obj, delete);
 	return (1);
@@ -196,11 +201,9 @@ int update_col_file_name(t_obj *obj, char *delete, char *update)
 	int ret = 0;
 	char *new_filename;
 
-
   	filename = ft_strjoin(obj->filename.curr_dir, "/database/tables/rows/columns/");
   	filename = ft_strjoin(filename, delete);
   	filename = ft_strjoin(filename, ".txt");
-	
 	new_filename = ft_strjoin(obj->filename.curr_dir, "/database/tables/rows/columns/");
   	new_filename = ft_strjoin(new_filename, update);
   	new_filename = ft_strjoin(new_filename, ".txt");
@@ -213,39 +216,46 @@ int update_col_file_name(t_obj *obj, char *delete, char *update)
    return(0);
 }
 
+t_read_line update_row_loop(t_obj *obj, char *delete, char *update_name, t_read_line rd)
+{
+	int row_count;
+
+	row_count = count_rows(obj);
+	printf("%d\n", row_count);
+	rd.fd = open(obj->filename.row, O_RDONLY);
+	rd.new_str = (char**)malloc(sizeof(char**) * row_count);
+	while (get_next_line(rd.fd, &rd.line) == 1)
+	{
+		if (ft_strcmp(delete, rd.line) == 0)
+		{
+			rd.new_str[rd.x] = (char*)malloc(sizeof(char *) * ft_strlen(update_name) + 1);
+			ft_strcpy(rd.new_str[rd.x], update_name);
+			printf("%s\n", rd.new_str[rd.x]);
+			rd.x++;
+		}
+		else
+		{
+			rd.new_str[rd.x] = (char*)malloc(sizeof(char *) * ft_strlen(rd.line) + 1);
+			ft_strcpy(rd.new_str[rd.x], rd.line);
+			printf("%s\n", rd.new_str[rd.x]);
+			rd.x++;
+		}
+	}
+	return (rd);
+}
+
 int update_row(t_obj *obj)
 {
 	char *delete;
 	char *update_name;
-	int row_count;
-	char **new;
-	int x;
-	int fd;
-	char *line;
+	t_read_line rd;
 
-	x = 0;
-
-	if (obj->filename.tab_path != 1)
-	{
-		if (choose_dbtab_path(obj, "ENTER DB NAME THAT YOUD LIKE TO SEE") == -1)
-		{
-			ft_putstr("NO SUCH INFORMATION");
-			return(-1);
-		}
-	}
-	if (obj->filename.row_path != 1)
-	{
-		printf("%s\n", obj->filename.curr_row);
-		if (choose_dbrow_path(obj, "ENTER DB table THAT YOUD LIKE TO SEE") == -1)
-		{
-			ft_putstr("NO SUCH INFORMATION");
-			return(-1);
-		}
-	}
+	rd.x = 0;
+	if(check_path_for_rows(obj) == -1)
+		return (-1);
 	printf("%s\n", obj->filename.row);
 	print_rows(obj);
 	delete = search_database_list(obj->filename.row, "ENTER ROW TO BE UPDATED");
-	
 	if (ft_strcmp(delete, "NO MATCH") == 0)
 	{
 		ft_putstr("DOESN'T MATCH\n");
@@ -253,30 +263,8 @@ int update_row(t_obj *obj)
 	}
 	update_name = get_answer("WHAT DO YOU WANT TO CHANGE THE ROW NAME TO?");
 	printf("%s\n", delete);
-	row_count = count_rows(obj);
-	printf("%d\n", row_count);
-
-	
-	fd = open(obj->filename.row, O_RDONLY);
-	new = (char**)malloc(sizeof(char**) * row_count);
-	while (get_next_line(fd, &line) == 1)
-	{
-		if (ft_strcmp(delete, line) == 0)
-		{
-			new[x] = (char*)malloc(sizeof(char *) * ft_strlen(update_name) + 1);
-			ft_strcpy(new[x], update_name);
-			printf("%s\n", new[x]);
-			x++;
-		}
-		else
-		{
-			new[x] = (char*)malloc(sizeof(char *) * ft_strlen(line) + 1);
-			ft_strcpy(new[x], line);
-			printf("%s\n", new[x]);
-			x++;
-		}
-	}
-	overwrite_db(obj->filename.row, new, x);
+	rd = update_row_loop(obj, delete, update_name, rd);
+	overwrite_db(obj->filename.row, rd.new_str, rd.x);
 	update_col_file_name(obj, delete, update_name);
 	return (1);
 }

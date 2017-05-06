@@ -1,4 +1,3 @@
 new_database
 db
 people
-new_db

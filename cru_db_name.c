@@ -14,7 +14,6 @@ int	print_database(char *database_directory)
 	}
 	ft_putstr("---------------");
 	ft_putstr(ANSI_COLOR_RESET);
-
 	ft_putstr("\n");
 	return(0);
 }
@@ -71,19 +70,18 @@ int check_duplicates(char *filepath, char *db_name)
 int make_table_file(t_obj *obj, char *db_name)
 {
 	char *filename;
-	FILE *fptr;
-
+	FILE *fptr;	
 	filename = ft_strjoin(obj->filename.curr_dir, "/database/tables/");
-  	filename = ft_strjoin(filename, db_name);
-  	filename = ft_strjoin(filename, ".txt");
+	filename = ft_strjoin(filename, db_name);
+	filename = ft_strjoin(filename, ".txt");
 	fptr = fopen(filename, "a");
 	if(fptr == NULL)
-   	{
-      printf("Error!");   
-      exit(1);             
-   	}
+	{
+		printf("Error!");   
+		exit(1);             
+	}
 	fclose(fptr);
-  	return (0);
+	return (0);
 }
 
 void add_database(t_obj *obj)
@@ -91,22 +89,22 @@ void add_database(t_obj *obj)
 	FILE *fptr;
 	char *db_name;
 
-   fptr = fopen(obj->filename.db, "a");
-   db_name	= get_answer("ENTER NAME OF NEW DATABASE");
+	fptr = fopen(obj->filename.db, "a");
+	db_name	= get_answer("ENTER NAME OF NEW DATABASE");
 	if (check_duplicates(obj->filename.db, db_name) == 1)
 	{
 		ft_putstr("!!!DUPLICATE DATABASE, PLEASE CHOOSE ANOTHER NAME!!!\n");
 		add_database(obj);
   		return ;
 	}
-   if(fptr == NULL)
-   {
-      printf("Error!");   
-      exit(1);             
-   }
-   fprintf(fptr, "%s\n", db_name);
-   fclose(fptr);
-   make_table_file(obj, db_name);
+	if(fptr == NULL)
+	{
+		printf("Error!");   
+		exit(1);             
+	}
+	fprintf(fptr, "%s\n", db_name);
+	fclose(fptr);
+	make_table_file(obj, db_name);
 }
 
 int update_table_file_name(t_obj *obj, char *delete, char *update)
@@ -134,19 +132,39 @@ int update_table_file_name(t_obj *obj, char *delete, char *update)
    return(0);
 }
 
+t_read_line update_db_loop(t_obj *obj, char *delete, char *update_name, t_read_line rd)
+{
+	int db_count;
+
+	db_count = count_databases(obj);
+	rd.fd = open(obj->filename.db, O_RDONLY);
+	rd.new_str = (char**)malloc(sizeof(char**) * db_count + 1);
+	while (get_next_line(rd.fd, &rd.line) == 1)
+	{
+		if (ft_strcmp(delete, rd.line) == 0)
+		{
+			rd.new_str[rd.x] = (char*)malloc(sizeof(char *) * ft_strlen(update_name) + 1);
+			ft_strcpy(rd.new_str[rd.x], update_name);
+			rd.x++;
+		}
+		else
+		{
+			rd.new_str[rd.x] = (char*)malloc(sizeof(char *) * ft_strlen(rd.line) + 1);
+			ft_strcpy(rd.new_str[rd.x], rd.line);
+			rd.x++;
+		}
+	}
+	overwrite_db(obj->filename.db, rd.new_str, db_count);
+	return (rd);
+}
 
 int update_database_name(t_obj *obj)
 {
 	char *delete;
-	char *line;
-	int fd;
-	int db_count;
-	int x;
+	t_read_line rd;
 	char *update_name;
-	char **new;
 
-	db_count = 0;
-	x = 0;
+	rd.x = 0;
 		delete = search_database_list(obj->filename.db, "ENTER DATABASE NAME TO UPDATE");
 	if (ft_strcmp(delete, "NO MATCH\n") == 0)
 	{
@@ -154,25 +172,7 @@ int update_database_name(t_obj *obj)
 		return (0);
 	}
 	update_name = get_answer("WHAT IS THE NEW NAME OF DATABASE?");
-	db_count = count_databases(obj);
-	fd = open(obj->filename.db, O_RDONLY);
-	new = (char**)malloc(sizeof(char**) * db_count + 1);
-	while (get_next_line(fd, &line) == 1)
-	{
-		if (ft_strcmp(delete, line) == 0)
-		{
-			new[x] = (char*)malloc(sizeof(char *) * ft_strlen(update_name) + 1);
-			ft_strcpy(new[x], update_name);
-			x++;
-		}
-		else
-		{
-			new[x] = (char*)malloc(sizeof(char *) * ft_strlen(line) + 1);
-			ft_strcpy(new[x], line);
-			x++;
-		}
-	}
-	overwrite_db(obj->filename.db, new, db_count);
+	rd = update_db_loop(obj, delete, update_name, rd);
 	update_table_file_name(obj, delete, update_name);
 
 	return (1);
