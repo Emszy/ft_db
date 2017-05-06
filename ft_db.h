@@ -69,7 +69,7 @@
 #define COL_DELIM			"kdsh1blj2hs371ajhb009"
 #define END_DELIM			"mfehbwpwijfdubew0weh7"
 
-typedef struct s_mlx 
+typedef struct 	s_mlx 
 {
   void    *mlx;
   void    *window;
@@ -77,10 +77,9 @@ typedef struct s_mlx
   int     y;
   char    *name;
   char    *current_word;
-}         t_mlx;
+}         		t_mlx;
 
-
-typedef struct s_file_names
+typedef struct 	s_file_names
 {
 	char *curr_dir;
 	char *db;
@@ -97,7 +96,7 @@ typedef struct s_file_names
 	char *fail;
 }				t_file_names;
 
-typedef struct s_table
+typedef struct 	s_table
 {
 	char **rows;
 	int total_rows;
@@ -108,7 +107,7 @@ typedef struct s_table
 	int died;
 }				t_table;
 
-typedef struct s_rd_line
+typedef struct 	s_rd_line
 {
 	int fd;
 	char *line;
@@ -117,9 +116,7 @@ typedef struct s_rd_line
 
 }				t_rd;
 
-
-
-typedef struct s_obj
+typedef struct 	s_obj
 {
 	t_file_names filename;
 }				t_obj;
@@ -137,12 +134,31 @@ void add_database(t_obj *obj);
 int update_database_name(t_obj *obj);
 int	print_tables(t_obj *obj);
 void write_table_to_file(t_obj *obj);
-int add_table_to_db(t_obj *obj);
 int choose_dbtab_path(t_obj *obj, char *message);
-int choose_dbtab_path(t_obj *obj, char *message);
-int	print_tables(t_obj *obj);
 void write_table_to_file(t_obj *obj);
 int add_table_to_db(t_obj *obj);
+
+
+int		check_path_for_table(t_obj *obj);
+
+
+
+int		make_row_file(t_obj *obj);
+
+
+int		count_tables(t_obj *obj);
+
+int		delete_row_file(t_obj *obj, char *delete);
+
+
+
+int		update_row_file_name(t_obj *obj, char *delete, char *update);
+
+t_rd	update_tab_loop(t_obj *obj, char *delete, char *update, t_rd rd);
+
+
+
+
 int count_tables(t_obj *obj);
 int delete_table(t_obj *obj);
 int update_table(t_obj *obj);
@@ -157,7 +173,6 @@ int choose_dbcol_path(t_obj *obj, char *message);
 int	print_cols(t_obj *obj);
 int		check_path_for_rows(t_obj *obj);
 int		update_col_file_name(t_obj *obj, char *delete, char *update);
-
 t_rd	update_row_loop(t_obj *obj, char *delete, char *update_name, t_rd rd);
 void write_col_to_file(t_obj *obj, t_table table);
 int add_col_to_row(t_obj *obj);
