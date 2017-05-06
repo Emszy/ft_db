@@ -244,7 +244,6 @@ int		update_table(t_obj *obj)
 	char	*line;
 
 	x = 0;
-
 	if (obj->filename.tab_path != 1)
 	{
 		if (choose_dbtab_path(obj, "ENTER DB NAME THAT HAS A TABLE YOUD LIKE TO UPDATE") == -1)
