@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_db.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ebucheit <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/05/05 23:22:15 by ebucheit          #+#    #+#             */
+/*   Updated: 2017/05/05 23:22:15 by ebucheit         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FT_DB_H
 # define FT_DB_H
 
@@ -143,11 +155,28 @@ int delete_row(t_obj *obj);
 int update_row(t_obj *obj);
 int choose_dbcol_path(t_obj *obj, char *message);
 int	print_cols(t_obj *obj);
+int		check_path_for_rows(t_obj *obj);
+int		update_col_file_name(t_obj *obj, char *delete, char *update);
+
+t_rd	update_row_loop(t_obj *obj, char *delete, char *update_name, t_rd rd);
 void write_col_to_file(t_obj *obj, t_table table);
 int add_col_to_row(t_obj *obj);
 int count_cols(char *filename);
 int delete_col(t_obj *obj);
 int update_col(t_obj *obj);
+void	print_col_choice(void);
+void	reset_flags(t_obj *obj);
+int		check_path_for_col(t_obj *obj);
+t_table		check_save_path(t_obj *obj, t_table table);
+void		print_table_row(t_table table);
+t_table			save_rows(t_obj *obj);
+t_table		save_column_file(t_table table);
+char		*iterate_dbcol_path(t_obj *obj, char *row);
+int		get_total_columns(t_obj *obj);
+void		print_in_order(char **all_cols, int total_cols);
+t_rd		update_loop(t_obj *obj, char *delete, char *update_name, \
+	t_rd rd);
+
 void datacol_nav(t_obj *obj);
 void datarow_nav(t_obj *obj);
 void datatable_nav(t_obj *obj);

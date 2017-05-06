@@ -11,7 +11,14 @@ SRC =	\
 		row_crud.c \
 		col_crud.c \
 		cru_db2.c \
-		ft_db2.c
+		ft_db2.c \
+		row_crud_del.c \
+		row_crud_helper.c \
+		row_crud_update.c \
+		col_crud_helper.c \
+		col_crud_save.c \
+		col_crud_print.c \
+		
 
 INPUT_OBJ =	\
 		ft_db.o	\
@@ -22,7 +29,14 @@ INPUT_OBJ =	\
 		row_crud.o \
 		col_crud.o \
 		cru_db2.o \
-		ft_db2.o
+		ft_db2.o \
+		row_crud_del.o \
+		row_crud_helper.o \
+		row_crud_update.o \
+		col_crud_helper.o \
+		col_crud_save.o \
+		col_crud_print.o \
+		
 	
 OBJ = $(patsubst %.c,%.o,$(addprefix ./, $(SRC)))
 
