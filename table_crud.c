@@ -22,7 +22,7 @@ int	print_tables(t_obj *obj)
 
 	if (obj->filename.tab_path != 1)
 	{
-		if (choose_dbtab_path(obj, "TABLES")== -1) 
+		if (choose_dbtab_path(obj, "CHOOSE TABLE")== -1) 
 			return (-1);
 	}
 	fd = open(obj->filename.table, O_RDONLY);
@@ -45,8 +45,7 @@ void write_table_to_file(t_obj *obj)
 	FILE *fptr;
 	char *table_name;
 
-  
-   table_name = get_answer("ENTER NAME OF NEW TABLE");
+	table_name = get_answer("ENTER NAME OF NEW TABLE");
 	if (check_duplicates(obj->filename.table, table_name) == 1)
 	{
 		ft_putstr("!!!DUPLICATE DATABASE, PLEASE CHOOSE ANOTHER NAME!!!\n");

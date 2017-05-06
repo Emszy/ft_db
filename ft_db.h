@@ -82,6 +82,7 @@ typedef struct s_file_names
 	char *curr_col;
 	int col_path;
 	int in_col_dir;
+	char *fail;
 }				t_file_names;
 
 typedef struct s_table

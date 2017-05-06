@@ -1,5 +1,4 @@
 name
 address
-phone number
+phone
 email
-info
