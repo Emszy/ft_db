@@ -1,39 +1,39 @@
 #include "ft_db.h"
 
-int delete_table_file(t_obj *obj, char *delete)
+int			delete_table_file(t_obj *obj, char *delete)
 {
-	char *filename;
-	int ret = 0;
-	FILE *fptr = NULL;
+	char	*filename;
+	int		ret;
+	FILE	*fptr;
 
-  	filename = ft_strjoin(obj->filename.curr_dir, "/database/tables/");
-  	filename = ft_strjoin(filename, delete);
-  	filename = ft_strjoin(filename, ".txt");
-  	
-  	fptr = fopen(filename, "w");
+	ret = 0;
+	fptr = NULL;
+	filename = ft_strjoin(obj->filename.curr_dir, "/database/tables/");
+	filename = ft_strjoin(filename, delete);
+	filename = ft_strjoin(filename, ".txt");
+	fptr = fopen(filename, "w");
 	ret = remove(filename);
 	ft_putstr(ANSI_COLOR_GREEN);
-   if(ret == 0)
-      ft_putstr("\nFile deleted successfully\n");
-   else
-   {
-   	ft_putstr(ANSI_COLOR_RED);
-      ft_putstr("\nError: unable to delete the file\n");
-   }
-  	ft_putstr(ANSI_COLOR_RESET);
-   fclose(fptr);
-   return(0);
+	if (ret == 0)
+		t_putstr("\nFile deleted successfully\n");
+	else
+	{
+		ft_putstr(ANSI_COLOR_RED);
+		t_putstr("\nError: unable to delete the file\n");
+	}
+	ft_putstr(ANSI_COLOR_RESET);
+	fclose(fptr);
+	return (0);
 }
 
-
-void overwrite_db(char *filename, char **db_names, int db_count)
+void		overwrite_db(char *filename, char **db_names, int db_count)
 {
-	FILE *fptr;
-	int x;
+	FILE	*fptr;
+	int		x;
 
 	x = 0;
 	fptr = fopen(filename, "w");
-	if(fptr == NULL)
+	if (fptr == NULL)
 	{
 		printf("Error!");
 		exit(1);
@@ -46,11 +46,11 @@ void overwrite_db(char *filename, char **db_names, int db_count)
 	fclose(fptr);
 }
 
-int count_databases(t_obj *obj)
+int			count_databases(t_obj *obj)
 {
-	int fd;
-	int x;
-	char *line;
+	int		fd;
+	int		x;
+	char	*line;
 
 	x = 0;
 	fd = open(obj->filename.db, O_RDONLY);
@@ -58,16 +58,15 @@ int count_databases(t_obj *obj)
 		x++;
 	close(fd);
 	return (x);
-
 }
 
-int delete_database(t_obj *obj)
+int			delete_database(t_obj *obj)
 {
-	char *delete;
-	t_read_line rd;
-	
+	char		*delete;
+	t_read_line	rd;
+
 	rd.x = 0;
-	delete = search_database_list(obj->filename.db, "ENTER DATABASE NAME TO BE DELETED");
+	delete = search_database_list(obj->filename.db, "ENTER db NAME to DELETE");
 	if (ft_strcmp(delete, "NO MATCH\n") == 0)
 	{
 		ft_putstr(delete);
@@ -79,7 +78,8 @@ int delete_database(t_obj *obj)
 	{
 		if (ft_strcmp(delete, rd.line) != 0)
 		{
-			rd.new_str[rd.x] = (char*)malloc(sizeof(char *) * ft_strlen(rd.line) + 1);
+			rd.new_str[rd.x] = (char*)malloc(sizeof(char *) * \
+				ft_strlen(rd.line) + 1);
 			ft_strcpy(rd.new_str[rd.x], rd.line);
 			rd.x++;
 		}
