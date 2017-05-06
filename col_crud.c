@@ -132,11 +132,11 @@ int			file_exists(const char *fname)
 
 int		get_total_columns(t_obj *obj)
 {
-	t_table	table;
-	int 		fd;
-	char 		*string;
-	int 		row;
-	int 		total;
+	t_table		table;
+	int			fd;
+	char		*string;
+	int			row;
+	int			total;
 
 	total = 0;
 	row = 0;
@@ -156,20 +156,22 @@ int		get_total_columns(t_obj *obj)
 	return (total);
 }
 
-void		print_in_order(char** all_cols, int total_cols)
+void		print_in_order(char **all_cols, int total_cols)
 {
-	int 	index;
+	int		index;
 	int		x;
 
 	x = 0;
 	while (x < total_cols)
 	{
 		index = 0;
-		while (ft_strcmp(all_cols[index], END_DELIM)!= 0)
+		while (ft_strcmp(all_cols[index], END_DELIM) != 0)
 		{
-			if (ft_strcmp(all_cols[index + x], COL_DELIM ) != 0 && ft_strcmp(all_cols[index + x], END_DELIM)!= 0)
+			if (ft_strcmp(all_cols[index + x], COL_DELIM) != 0 \
+			&& ft_strcmp(all_cols[index + x], END_DELIM) != 0)
 				printf("%10.10s |", all_cols[index + x]);
-			while( ft_strcmp(all_cols[index], COL_DELIM ) != 0 && ft_strcmp(all_cols[index], END_DELIM)!= 0)
+			while (ft_strcmp(all_cols[index], COL_DELIM) != 0 \
+			&& ft_strcmp(all_cols[index], END_DELIM) != 0)
 				index++;
 			index++;
 		}
@@ -185,37 +187,41 @@ t_table		save_column_file(t_table table)
 	char	*string;
 
 	fd = open(table.col_path, O_RDONLY);
-	while(get_next_line(fd, &string))
-		{
-			table.columns[table.x] = (char*)malloc(sizeof(char*) * ft_strlen(string) + 1);
-			table.columns[table.x] = ft_strjoin(table.columns[table.x], string);
-			table.x++;
-			table.total_cols++;
-		}
-		close(fd);
-		return (table);
+	while (get_next_line(fd, &string))
+	{
+		table.columns[table.x] = (char*)malloc(sizeof(char*) * \
+			ft_strlen(string) + 1);
+		table.columns[table.x] = ft_strjoin(table.columns[table.x], string);
+		table.x++;
+		table.total_cols++;
+	}
+	close(fd);
+	return (table);
 }
 
 int			print_cols(t_obj *obj)
 {
 	t_table		table;
-	int row;
-	
+	int			row;
+
 	row = -1;
 	if (check_path_for_col(obj) == -1)
-		return(-1);
+		return (-1);
 	table = save_rows(obj);
-	table.columns = (char**)malloc(sizeof(char**) * (get_total_columns(obj) + table.total_rows + 20));
-	while(++row < table.total_rows)
-	{	
+	table.columns = (char**)malloc(sizeof(char**) * \
+		(get_total_columns(obj) + table.total_rows + 20));
+	while (++row < table.total_rows)
+	{
 		table.total_cols = 0;
 		table.col_path = iterate_dbcol_path(obj, table.rows[row]);
-			table = save_column_file(table);
-			table.columns[table.x] = (char*)malloc(sizeof(char*) * ft_strlen(COL_DELIM) + 1);
-			table.columns[table.x] = ft_strcpy(table.columns[table.x], COL_DELIM);
-			table.x++;
+		table = save_column_file(table);
+		table.columns[table.x] = (char*)malloc(sizeof(char*) * \
+			ft_strlen(COL_DELIM) + 1);
+		table.columns[table.x] = ft_strcpy(table.columns[table.x], COL_DELIM);
+		table.x++;
 	}
-	table.columns[table.x] = (char*)malloc(sizeof(char*) * ft_strlen(END_DELIM) + 1);
+	table.columns[table.x] = (char*)malloc(sizeof(char*) * \
+		ft_strlen(END_DELIM) + 1);
 	table.columns[table.x] = ft_strcpy(table.columns[table.x], END_DELIM);
 	print_table_row(table);
 	printf("\n\n\n");
@@ -225,12 +231,10 @@ int			print_cols(t_obj *obj)
 	return(0);
 }
 
-
-
-void 		write_col_to_file(t_obj *obj, t_table table)
+void		write_col_to_file(t_obj *obj, t_table table)
 {
-	FILE *fptr;
-	char *col_name;
+	FILE 	*fptr;
+	char 	*col_name;
 
    fptr = fopen(table.col_path, "a");
    col_name = get_answer("ENTER NAME OF NEW COL");
@@ -249,8 +253,8 @@ int add_col_to_row(t_obj *obj)
 {
 
 	t_table		table;
-	int row;
-	int col;
+	int 		row;
+	int 		col;
 
 	row = 0;
 	col = 0;
