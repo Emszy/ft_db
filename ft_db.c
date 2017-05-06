@@ -48,10 +48,7 @@ void	datacol_nav(t_obj *obj)
 	char	*crud_choice;
 	int		x;
 
-	obj->filename.in_col_dir = 1;
 	x = 1;
-	while (obj->filename.in_col_dir)
-	{
 		if (print_cols(obj) == -1)
 		{
 			reset_flags(obj);
@@ -63,7 +60,6 @@ void	datacol_nav(t_obj *obj)
 		take_choices(usr_crud_choice, obj);
 		if (usr_crud_choice == 4)
 			reset_flags(obj);
-	}
 }
 
 void	display_row_choices(t_obj *obj)
@@ -169,7 +165,7 @@ void	database_nav(t_obj *obj)
 	}
 }
 
-int		display_init_choices(t_obj *obj, int usr_choice, int tru)
+void	display_init_choices(t_obj *obj, int usr_choice)
 {
 	if (usr_choice == 1)
 		database_nav(obj);
@@ -179,23 +175,17 @@ int		display_init_choices(t_obj *obj, int usr_choice, int tru)
 		datarow_nav(obj);
 	if (usr_choice == 4)
 		datacol_nav(obj);
-	if (usr_choice == 5)
-		tru = 0;
-	return (tru);
 }
 
 int		main(void)
 {
 	t_obj	*obj;
-	int		tru;
 	char	*dir_choice;
 	int		usr_choice;
 
-	tru = 1;
 	obj = malloc(sizeof(t_obj));
 	init_db_file(obj);
-	while (tru)
-	{
+
 		reset_flags(obj);
 		usr_choice = 0;
 		dir_choice = get_answer("\
@@ -205,8 +195,7 @@ int		main(void)
 		Enter 4 to navigate to row columns\n \
 		Enter 5 to quit Program\n");
 		usr_choice = atoi(dir_choice);
-		tru = display_init_choices(obj, usr_choice, tru);
-	}
+		display_init_choices(obj, usr_choice);
 	return (0);
 }
 
