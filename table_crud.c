@@ -1,40 +1,74 @@
 #include "ft_db.h"
 
-/*Norme: ./table_crud.c
-Error: 10 functions in the file
+/*./table_crud.c
+Error: global scope bad aligned
+Error: 12 functions in the file
 Error: 42 header not at top of the file
-Error (line 5, col 5): bad spacing
-Error (line 9, col 2): missing space after return
-Error (line 10): line has 83 characters
-Error (line 25): missing newline after if
-Error (line 25): spaces at the end of line
-Error (line 25, col 44): missing space around ==
-Error (line 30): Empty line
-Error (line 32, col 1): missing space after while
-Error (line 57, col 1): missing space after if
-Error (line 59): spaces at the end of line
-Error (line 60): spaces at the end of line
-Error (line 75, col 1): missing space after if
-Error (line 88): line has 84 characters
-Error (line 91, col 3): missing space after return
-Error (line 128): missing newline after if
-Error (line 128): spaces at the end of line
-Error (line 130): spaces at the end of line
-Error (line 136): function delete_table has 39 lines
-Error (line 136, col 0): delete_table has 6 variables
-Error (line 148): line has 96 characters
-Error (line 155): line has 94 characters
-Error (line 161): spaces at the end of line
-Error (line 161, col 32): bad character after ;
-Error (line 193): missing newline after if
-Error (line 193): spaces at the end of line
-Error (line 195): spaces at the end of line
-Error (line 200): function update_table has 49 lines
-Error (line 200, col 0): update_table has 7 variables
-Error (line 211): Empty line
-Error (line 214): line has 96 characters
-Error (line 217, col 3): missing space after return
-Error (line 221): line has 94 characters*/
+Error: file must end with a single empty line
+Error (line 41, col 5): bad spacing
+Error (line 45, col 2): missing space after return
+Error (line 46): line has 83 characters
+Error (line 54): Space before function name
+Error (line 62, col 3): missing space after return
+Error (line 65, col 1): missing space after return
+Error (line 75): missing newline after if
+Error (line 75): spaces at the end of line
+Error (line 75, col 44): missing space around ==
+Error (line 80): Empty line
+Error (line 82, col 1): missing space after while
+Error (line 107, col 1): missing space after if
+Error (line 109): spaces at the end of line
+Error (line 110): spaces at the end of line
+Error (line 125, col 1): missing space after if
+Error (line 138): line has 84 characters
+Error (line 141, col 3): missing space after return
+Error (line 164): bad spacing after delete_row_file
+Error (line 178): missing newline after if
+Error (line 178): spaces at the end of line
+Error (line 180): spaces at the end of line
+Error (line 186): multiple empty lines
+Error (line 187): declarations in delete_table are bad aligned
+Error (line 187): Space before function name
+Error (line 187): bad spacing before delete_table
+Error (line 194, col 1): missing space after if
+Error (line 203): spaces at the end of line
+Error (line 203, col 32): bad character after ;
+Error (line 212): declarations in update_row_file_name are bad aligned
+Error (line 212): Space before function name
+Error (line 215, col 5): ret is instanciated during declaration
+Error (line 218): bad indentation
+Error (line 218): must begin only by tabulations
+Error (line 219): bad indentation
+Error (line 219): must begin only by tabulations
+Error (line 220): bad indentation
+Error (line 220): must begin only by tabulations
+Error (line 222): bad indentation
+Error (line 222): must begin only by tabulations
+Error (line 223): bad indentation
+Error (line 223): must begin only by tabulations
+Error (line 225): bad indentation
+Error (line 225): missing newline after if
+Error (line 225): must begin only by tabulations
+Error (line 225): spaces at the end of line
+Error (line 225, col 4): missing space after if
+Error (line 226): bad indentation
+Error (line 226): must begin only by tabulations
+Error (line 227): bad indentation
+Error (line 227): must begin only by tabulations
+Error (line 227): spaces at the end of line
+Error (line 228): bad indentation
+Error (line 228): must begin only by tabulations
+Error (line 229): bad indentation
+Error (line 229): must begin only by tabulations
+Error (line 229, col 4): missing space after return
+Error (line 243): line has 85 characters
+Error (line 250): line has 87 characters
+Error (line 259): Space before function name
+Error (line 259): declarations must be followed by one empty line in update_table
+Error (line 264): spaces at the end of line
+Error (line 266, col 1): missing space after if
+Error (line 282): multiple empty lines
+Error (line 283): multiple empty lines*/
 
 int		choose_dbtab_path(t_obj *obj, char *message)
 {

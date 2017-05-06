@@ -4,7 +4,7 @@
 Error: global scope bad aligned
 Error: 8 functions in the file
 Error: 42 header not at top of the file
-Error (line 140): line has 92 characters
+Error (line 171): declarations in update_database_name are bad aligned
 */
 
 int		print_database(char *database_directory)

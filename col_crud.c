@@ -4,11 +4,13 @@ Error: global scope bad aligned
 Error: 17 functions in the file
 Error: 42 header not at top of the file
 Error (line 1): preprocessor block must be followed by one empty line
-Error (line 185): bad spacing after save_column_file
-Error (line 202): comment not well formatted
-Error (line 203): function print_cols has 27 lines
-Error (line 203): bad spacing before print_cols
-Error (line 219): line has 90 characters*/
+Error (line 194): bad spacing after save_column_file
+Error (line 211): comment not well formatted
+Error (line 212): function print_cols has 27 lines
+Error (line 212): bad spacing before print_cols
+Error (line 228): line has 90 characters
+Error (line 322): declarations in delete_col are bad aligned
+Error (line 344): declarations in update_col are bad aligned*/
 
 int		choose_dbcol_path(t_obj *obj, char *message)
 {

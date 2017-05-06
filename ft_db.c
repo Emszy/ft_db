@@ -1,11 +1,28 @@
 #include "ft_db.h"
 
-/* Norme: ./ft_db.c
+/*Norme: ./ft_db.c
 Error: 11 functions in the file
 Error: 42 header not at top of the file
-Error (line 219): comment not well formatted
-Error (line 241): multiple empty lines
-Error (line 242): comment not well formatted
+Error (line 52): bad indentation
+Error (line 53): bad indentation
+Error (line 54): bad indentation
+Error (line 55): bad indentation
+Error (line 56): bad indentation
+Error (line 57): bad indentation
+Error (line 58): bad indentation
+Error (line 59): bad indentation
+Error (line 60): bad indentation
+Error (line 61): bad indentation
+Error (line 62): bad indentation
+Error (line 188): Empty line
+Error (line 189): bad indentation
+Error (line 190): bad indentation
+Error (line 191): bad indentation
+Error (line 197): bad indentation
+Error (line 198): bad indentation
+Error (line 202): comment not well formatted
+Error (line 224): multiple empty lines
+Error (line 225): comment not well formatted
 */
 
 void	reset_flags(t_obj *obj)
