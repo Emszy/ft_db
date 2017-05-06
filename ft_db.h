@@ -152,6 +152,8 @@ void datacol_nav(t_obj *obj);
 void datarow_nav(t_obj *obj);
 void datatable_nav(t_obj *obj);
 void database_nav(t_obj *obj);
+t_rd copy_del_loop(t_rd rd, char *delete);
+
 
 
 

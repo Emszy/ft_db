@@ -51,6 +51,20 @@ int		choose_dbtab_path(t_obj *obj, char *message)
 	return (0);
 }
 
+int check_path_for_table(t_obj *obj)
+{
+	if (obj->filename.tab_path != 1)
+	{
+		if (choose_dbtab_path(obj, \
+			"ENTER TABLE NAME THAT YOUD LIKE TO SEE") == -1)
+		{
+			ft_putstr("NO SUCH INFORMATION");
+			return(-1);
+		}
+	}
+	return(1);
+}
+
 int		print_tables(t_obj *obj)
 {
 	int		fd;
